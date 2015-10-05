@@ -12,9 +12,14 @@ def parse_recipe(url):
     :param url: URL for recipe.
     :return: JSON recipe object, formatted by our delightful PHP library.
     """
+    system_type = platform.system()
     # url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"
-    fn = os.path.join(os.path.dirname(__file__), 'RecipeParser/bin/parse_recipe')
-    recipe_json = subprocess.call([fn,url,"json"])
+    if system_type == 'Windows':
+        fn = os.path.join(os.path.dirname(__file__), 'RecipeParser/bin/parse_recipe')
+        recipe_json = subprocess.call(['php.exe', fn, url, "json"])
+    else:
+        fn = os.path.join(os.path.dirname(__file__), 'RecipeParser/bin/parse_recipe')
+        recipe_json = subprocess.call([fn, url, "json"])
     print recipe_json
     return recipe_json
 
@@ -36,8 +41,8 @@ def get_html(url):
         return None
 
 
-#parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
-#parse_recipe("http://www.epicurious.com/recipes/food/views/our-favorite-lasagna-with-sausage-spinach-and-three-cheeses-51253440")
+parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+parse_recipe("http://www.epicurious.com/recipes/food/views/our-favorite-lasagna-with-sausage-spinach-and-three-cheeses-51253440")
 
-print platform.system()
+# print platform.system()
 
