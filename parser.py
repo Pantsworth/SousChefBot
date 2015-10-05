@@ -5,6 +5,7 @@
 import os
 import subprocess
 import urllib2
+import platform
 
 def parse_recipe(url):
     """
@@ -35,7 +36,8 @@ def get_html(url):
         return None
 
 
-parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
-parse_recipe("http://www.epicurious.com/recipes/food/views/our-favorite-lasagna-with-sausage-spinach-and-three-cheeses-51253440")
+#parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+#parse_recipe("http://www.epicurious.com/recipes/food/views/our-favorite-lasagna-with-sausage-spinach-and-three-cheeses-51253440")
 
+print platform.system()
 
