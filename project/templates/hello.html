@@ -13,5 +13,23 @@
       <div id="content"></div>
     </div>
     <!-- scripts -->
+    
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.0/react.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.0/JSXTransformer.js"></script>
+    <script type="text/jsx">
+
+      /*** @jsx React.DOM */
+
+      var helloWorld = React.createClass({
+        render: function() {
+          return (<h2>Greetings, from Real Python!</h2>)
+        }
+      });
+
+      React.render(
+        React.createElement(helloWorld, null),
+        document.getElementById('content')
+      );
+    </script> 
   </body>
 </html>
