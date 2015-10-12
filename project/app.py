@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import parser
 import json
 
@@ -7,8 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
-
+    return render_template('form.html')
 
 @app.route('/hello')
 def hello():
@@ -18,10 +17,11 @@ def hello():
 def jsonreq():
     """
     Calls recipe parser and generates a response page.
-    TODO: Pass URL from frontpage form to this function.
     :return:
     """
-    jsondata = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+    url = request.form['url']
+    jsondata = parser.parse_recipe(url)
+
     recipe_title = jsondata['title']
     recipe_yield = jsondata['yield']
     recipe_ingredients = jsondata['ingredients']
