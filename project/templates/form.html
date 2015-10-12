@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
   <title>SousChefBot</title>
-
+<link rel="shortcut icon" href="../static/images/icon.ico">
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="../static/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -13,9 +13,9 @@
 <body>
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">Logo</a>
+      <a id="logo-container" href="" class="brand-logo">ChefSousBot</a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Navbar Link</a></li>
+        <li><a href="#">FAQ</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
@@ -46,13 +46,20 @@
 
   <div class="container">
     <div class="section" id="enter-recipe">
-      <form action="json_test" method="post">
-       <textarea cols="60" rows="8" name="url"></textarea><br /><br />   
-         <input type="submit" value="Send"> 
-       </form>             
+        <form action="json_test" method="post">
+          <div class="row"> 
+
+          <div class="input-field col s12">
+            <input id="url" type="text" class="validate" name="url">
+            <label for="first_name2">Enter Recipe URL</label>
+          </div>
+        </div>
+          <button class="btn waves-effect waves-light green lighten-1" type="submit" value="Send">Submit
+            <i class="material-icons right">send</i>
+          </button>
+        </form>
     </div>
   </div>
-
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
