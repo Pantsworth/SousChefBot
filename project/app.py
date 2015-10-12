@@ -25,11 +25,11 @@ def jsonreq():
     recipe_title = jsondata['title']
     recipe_yield = jsondata['yield']
     recipe_ingredients = jsondata['ingredients']
-    recipe_steps = jsondata['instructions']
+    recipe_instructions = jsondata['instructions']
 
     print recipe_title, " ", recipe_ingredients
     return render_template('json_test.html', html_title=recipe_title, html_yield=recipe_yield,
-                           html_ingredients=recipe_ingredients, html_steps=recipe_steps, jsondata=jsondata)
+                           html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata=jsondata)
 
 
 if __name__ == '__main__':

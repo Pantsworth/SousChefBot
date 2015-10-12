@@ -54,12 +54,12 @@ def validate_url(url):
         return None
 
 
-def human_readable(recipe_json):
-    parsed_json = json.loads(recipe_json)
-    print "RECIPE RETRIVAL: SUCCESS"
-    print "TITLE: ", parsed_json['title']
-    print "YIELD: ", parsed_json['yield']
-    print "INGREDIENTS: ", parsed_json['ingredients']
+def human_readable(parsed_json):
+    # parsed_json = json.loads(recipe_json)
+    # print "RECIPE RETRIVAL: SUCCESS"
+    # print "TITLE: ", parsed_json['title']
+    # print "YIELD: ", parsed_json['yield']
+    print "INGREDIENTS: ", parsed_json['ingredients'][0]['list']
     print "INSTRUCTIONS: ", parsed_json['instructions']
 
     # pprint.pprint(parsed_json)
@@ -67,7 +67,7 @@ def human_readable(recipe_json):
 
 
 
-# human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
+human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
 
 # print platform.system()
 

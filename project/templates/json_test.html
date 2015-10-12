@@ -12,31 +12,17 @@
           <h1>Yield: {{html_yield}}</h1>
           <h1>Ingredients: </h1>
           <ul>
-      {% for item in html_ingredients %}
-        <li>{{item}}</li>
-      {% endfor %}
-    </ul>
+            {% for item in html_ingredients[0]['list'] %}
+            <li>{{item}}</li>
+            {% endfor %}
+            </ul>
+          <h1>Instructions: </h1>
+          <ul>{% for item in html_instructions[0]['list'] %}
+            <li>{{item}}</li>
+            {% endfor %}
+          </ul>
       </div>
-      <hr/>
-      <div>
-      This is the JSON data, as a string:<br />
-      <pre>{{jsondata}}</pre>
-      This is the JSON data, as an array of objects:<br />
-
-      </div>
-      <div class="header">
-        <h3 class="text-muted">Code to manage a JSON Request</h3>
-      </div>
-      <hr/>
-<!--<pre>-->
-
-<!--@app.route('/json_test', methods=['POST'])-->
-<!--def jsonreq():-->
-    <!--# Get the JSON data sent from the form-->
-    <!--# Convert the JSON data into a Python structure-->
-    <!--data = json.loads(jsondata)-->
-    <!--return render_template('json_test.html', data=data, jsondata=jsondata)-->
-
-    <!--</pre>-->
+        </div>
+  </body>
 </html>
 
