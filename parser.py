@@ -7,7 +7,7 @@ import subprocess
 import urllib2
 import platform
 import json
-
+from project import app
 
 def parse_recipe(url):
     """Calls CLI and runs our PHP recipe_parser function. Returns JSON
@@ -91,9 +91,6 @@ def human_readable(parsed_json):
 #     human_readable(info)
 #     find_cooking_tools(info['instructions'], k_base)
 #     return
-
-
-
 
 
 
