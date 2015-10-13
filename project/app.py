@@ -17,17 +17,18 @@ def hello():
 def jsonreq():
     """
     Calls recipe parser and generates a response page.
-    :return:
+    :return: an html page containing scraped recipe info
     """
-    url = request.form['url']
-    jsondata = parser.parse_recipe(url)
+    url = request.form['url']               # acquires URL from form.html
+    jsondata = parser.parse_recipe(url)     # parse html with our parser
 
     recipe_title = jsondata['title']
     recipe_yield = jsondata['yield']
     recipe_ingredients = jsondata['ingredients']
     recipe_instructions = jsondata['instructions']
 
-    print recipe_title, " ", recipe_ingredients
+    # print url
+    # print recipe_title, " ", recipe_ingredients
     return render_template('json_test.html', html_title=recipe_title, html_yield=recipe_yield,
                            html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata=jsondata)
 

@@ -1,4 +1,4 @@
-<?php
+<?php error_reporting(0);
 
 class RecipeParser_Text {
 

@@ -7,7 +7,7 @@ import subprocess
 import urllib2
 import platform
 import json
-import pprint
+
 
 def parse_recipe(url):
     """Calls CLI and runs our PHP recipe_parser function. Returns JSON
@@ -27,6 +27,7 @@ def parse_recipe(url):
         fn = os.path.join(os.path.dirname(__file__), 'RecipeParser/bin/parse_recipe')
         recipe_json = subprocess.check_output([fn, url, "json"])
 
+    print recipe_json
     parsed_json = json.loads(recipe_json)
 
     return parsed_json
@@ -56,18 +57,47 @@ def validate_url(url):
 
 def human_readable(parsed_json):
     # parsed_json = json.loads(recipe_json)
-    # print "RECIPE RETRIVAL: SUCCESS"
-    # print "TITLE: ", parsed_json['title']
-    # print "YIELD: ", parsed_json['yield']
+    print "RECIPE RETRIVAL: SUCCESS"
+    print "TITLE: ", parsed_json['title']
+    print "YIELD: ", parsed_json['yield']
     print "INGREDIENTS: ", parsed_json['ingredients'][0]['list']
     print "INSTRUCTIONS: ", parsed_json['instructions']
 
-    # pprint.pprint(parsed_json)
     return
 
 
+# def find_cooking_tools(steps, knowledge_base):
+#     """
+#     finds cooking tools by comparing step string to cooking_wares.txt.
+#     Avoids duplicates by replacing found items with empty string.
+#     :param steps:
+#     :return: list of tools as list of words
+#     """
+#     wares = knowledge_base.cooking_wares
+#     tool_list = []
+#     for e in steps:
+#         e = e.lower()
+#         for tool in wares:
+#             if tool in e and tool not in tool_list:
+#                 e = e.replace(tool, '')
+#                 tool_list.append(tool)
+#                 # print tool
+#     return tool_list
+#
+# def startup():
+#     k_base = kb.KnowledgeBase()
+#     k_base.load()
+#     info = parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+#     human_readable(info)
+#     find_cooking_tools(info['instructions'], k_base)
+#     return
 
-human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
+
+
+
+
+
+# human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
 
 # print platform.system()
 
