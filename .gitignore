@@ -6,3 +6,4 @@ include/
 *.pyo
 .Python
 .DS_Store
+.idea

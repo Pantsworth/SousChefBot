@@ -32,7 +32,14 @@ def parse_recipe(url):
 
     else:
         fn = os.path.join(os.path.dirname(__file__), 'RecipeParser/bin/parse_recipe')
-        recipe_json = subprocess.check_output([fn, url, "json"])
+        print fn
+        try:
+            recipe_json = subprocess.check_output([fn, url, "json"])
+        except subprocess.CalledProcessError as problem:
+            print problem.output
+            print problem.returncode
+            recipe_json = None
+
 
     # sometimes the PHP parse_recipe is too verbose. this corrects that issue.
     recipe_json = recipe_json.rpartition('}')
