@@ -7,7 +7,10 @@ import subprocess
 import urllib2
 import platform
 import json
-from project import app
+import sys
+import string
+from parser_package import kb
+
 
 def parse_recipe(url):
     """Calls CLI and runs our PHP recipe_parser function. Returns JSON
@@ -22,11 +25,20 @@ def parse_recipe(url):
     # url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"
     if system_type == 'Windows':
         fn = os.path.join(os.path.dirname(__file__), 'RecipeParser/bin/parse_recipe')
-        recipe_json = subprocess.check_output(['php.exe', fn, url, "json"])
+        try:
+            recipe_json = subprocess.check_output(['php.exe', fn, url, "json"], stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as problem:
+            print problem.output
+            print problem.returncode
+            recipe_json = None
+
     else:
         fn = os.path.join(os.path.dirname(__file__), 'RecipeParser/bin/parse_recipe')
         recipe_json = subprocess.check_output([fn, url, "json"])
 
+    # sometimes the PHP parse_recipe is too verbose. this corrects that issue.
+    recipe_json = recipe_json.rpartition('}')
+    recipe_json = recipe_json[0] + recipe_json[1]
     print recipe_json
     parsed_json = json.loads(recipe_json)
 
@@ -56,6 +68,7 @@ def validate_url(url):
 
 
 def human_readable(parsed_json):
+    """prints human-readable version of recipe."""
     # parsed_json = json.loads(recipe_json)
     print "RECIPE RETRIVAL: SUCCESS"
     print "TITLE: ", parsed_json['title']
@@ -66,35 +79,36 @@ def human_readable(parsed_json):
     return
 
 
-# def find_cooking_tools(steps, knowledge_base):
-#     """
-#     finds cooking tools by comparing step string to cooking_wares.txt.
-#     Avoids duplicates by replacing found items with empty string.
-#     :param steps:
-#     :return: list of tools as list of words
-#     """
-#     wares = knowledge_base.cooking_wares
-#     tool_list = []
-#     for e in steps:
-#         e = e.lower()
-#         for tool in wares:
-#             if tool in e and tool not in tool_list:
-#                 e = e.replace(tool, '')
-#                 tool_list.append(tool)
-#                 # print tool
-#     return tool_list
-#
-# def startup():
-#     k_base = kb.KnowledgeBase()
-#     k_base.load()
-#     info = parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
-#     human_readable(info)
-#     find_cooking_tools(info['instructions'], k_base)
-#     return
+def find_cooking_tools(steps, knowledge_base):
+    """
+    finds cooking tools by comparing step string to cooking_wares.txt.
+    Avoids duplicates by replacing found items with empty string.
+    :param steps:
+    :return: list of tools as list of words
+    """
+    wares = knowledge_base.cooking_wares
+    tool_list = []
+    for e in steps[0]:
+        e = e.lower()
+        for tool in wares:
+            if tool in e and tool not in tool_list:
+                e = e.replace(tool, '')
+                tool_list.append(tool)
+                print tool
+    return tool_list
 
+
+def startup():
+    k_base = kb.KnowledgeBase()
+    k_base.load()
+    info = parse_recipe("http://allrecipes.com/recipe/240061/karens-italian-pan-fried-chicken/?internalSource=staff%20pick&referringContentType=home%20page/")
+    human_readable(info)
+    find_cooking_tools(info['instructions'], k_base)
+    return
 
 
 # human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
 
+startup()
 # print platform.system()
 

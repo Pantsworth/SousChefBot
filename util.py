@@ -1,5 +1,4 @@
-__author__ = 'DoctorWatson'
-
+import os
 
 
 def relative_path(path):

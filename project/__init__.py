@@ -1,7 +1,10 @@
-__author__ = 'DoctorWatson'
-from flask import Flask, render_template, request
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import parser
-import json
+from flask import Flask, render_template, request
+
 
 app = Flask(__name__)
 
@@ -21,7 +24,7 @@ def jsonreq():
     :return: an html page containing scraped recipe info
     """
     url = request.form['url']               # acquires URL from form.html
-    jsondata = parser.parse_recipe(url)     # parse html with our parser
+    jsondata = parse_recipe(url)     # parse html with our parser
 
     recipe_title = jsondata['title']
     recipe_yield = jsondata['yield']

@@ -1,8 +1,6 @@
 __author__ = 'DoctorWatson'
 import util
 import os
-import nltk
-import parser
 
 
 class KnowledgeBase:

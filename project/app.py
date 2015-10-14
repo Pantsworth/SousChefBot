@@ -2,9 +2,8 @@ import sys
 import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-import parser
+from project import parser
 from flask import Flask, render_template, request
-import json
 
 app = Flask(__name__)
 
