@@ -7,8 +7,6 @@ import subprocess
 import urllib2
 import platform
 import json
-import sys
-import string
 from parser_package import kb
 
 
