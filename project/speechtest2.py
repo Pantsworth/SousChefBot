@@ -13,7 +13,7 @@ def start_speech_rec():
     """
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print("Say something!")
+        print("Yes master?")
         audio = r.listen(source)
 
     google_response = ""
@@ -72,6 +72,7 @@ def background_listen():
 
     # recognize speech using Wit.ai
     WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
+
     try:
         print("Wit.ai thinks you said " + r.recognize_wit(audio, key=WIT_AI_KEY))
     except sr.UnknownValueError:
@@ -79,12 +80,27 @@ def background_listen():
     except sr.RequestError as e:
         print("Could not request results from Wit.ai service; {0}".format(e))
 
-    if re.compile(r'\bsous chef\b', flags=re.IGNORECASE).search(r.recognize_wit(audio, key=WIT_AI_KEY)):
+    if re.compile(r'\bcomputer\b', flags=re.IGNORECASE).search(r.recognize_wit(audio, key=WIT_AI_KEY)):
         magic_word_status = True
     else:
         magic_word_status = False
 
     return magic_word_status
+
+
+def run_speech_rec():
+
+    background = False
+    while background == False:
+        background = background_listen()
+        print background
+        if background == True:
+            break
+    command = start_speech_rec()
+    print "say a command now!"
+    return command
+
+run_speech_rec()
 
 # if 'sous chef' in r.recognize_wit(audio, key='AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO'):
 #     print('yes')
