@@ -22,7 +22,7 @@ except sr.RequestError as e:
     print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
 # recognize speech using Wit.ai
-WIT_AI_KEY = "INSERT WIT.AI API KEY HERE" # Wit.ai keys are 32-character uppercase alphanumeric strings
+WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
 try:
     print("Wit.ai thinks you said " + r.recognize_wit(audio, key=WIT_AI_KEY))
 except sr.UnknownValueError:
