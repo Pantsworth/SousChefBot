@@ -103,17 +103,17 @@ def find_cooking_tools(steps, knowledge_base):
     return tool_list
 
 
-def startup():
-    k_base = kb.KnowledgeBase()
-    k_base.load()
-    info = parse_recipe("http://allrecipes.com/recipe/240061/karens-italian-pan-fried-chicken/?internalSource=staff%20pick&referringContentType=home%20page/")
-    human_readable(info)
-    find_cooking_tools(info['instructions'], k_base)
-    return
+# def startup():
+#     k_base = kb.KnowledgeBase()
+#     k_base.load()
+#     info = parse_recipe("http://allrecipes.com/recipe/240061/karens-italian-pan-fried-chicken/?internalSource=staff%20pick&referringContentType=home%20page/")
+#     human_readable(info)
+#     find_cooking_tools(info['instructions'], k_base)
+#     return
 
 
 # human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
 
-startup()
+# startup()
 # print platform.system()
 
