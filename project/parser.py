@@ -112,7 +112,7 @@ def find_cooking_tools(steps, knowledge_base):
 #     return
 
 
-# human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
+human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
 
 # startup()
 # print platform.system()

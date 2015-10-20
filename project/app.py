@@ -2,7 +2,7 @@ import sys
 import os
 
 # sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-import parser
+from project import parser
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -12,9 +12,11 @@ app = Flask(__name__)
 def index():
     return render_template('form.html')
 
+
 @app.route('/hello')
 def hello():
     return render_template('hello.html')
+
 
 @app.route('/json_test', methods=['GET', 'POST'])
 def jsonreq():
