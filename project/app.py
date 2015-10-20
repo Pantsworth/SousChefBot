@@ -4,6 +4,7 @@ import os
 # sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from project import parser
 from flask import Flask, render_template, request
+from project import speech_response
 
 app = Flask(__name__)
 
@@ -31,6 +32,10 @@ def jsonreq():
     recipe_yield = jsondata['yield']
     recipe_ingredients = jsondata['ingredients']
     recipe_instructions = jsondata['instructions']
+
+    test_engine = speech_response.VoiceEngine()
+    test_engine.say_this("computer? computer!")
+
 
     # print url
     # print recipe_title, " ", recipe_ingredients

@@ -7,3 +7,5 @@ include/
 .Python
 .DS_Store
 .idea
+.idea/workspace.xml
+.idea/misc.xml

@@ -4,6 +4,7 @@ __author__ = 'DoctorWatson'
 
 import speech_recognition as sr
 import re
+import speech_response
 
 # obtain audio from the microphone
 def start_speech_rec():
@@ -13,7 +14,7 @@ def start_speech_rec():
     """
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print("Yes master?")
+        print("*** Yes master? ***")
         audio = r.listen(source)
 
     google_response = ""
@@ -29,7 +30,6 @@ def start_speech_rec():
     except sr.RequestError as e:
         google_response = ("Could not request results from Google Speech Recognition service; {0}".format(e))
 
-    print google_response
     # recognize speech using Wit.ai
     WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
     try:
@@ -39,6 +39,7 @@ def start_speech_rec():
     except sr.RequestError as e:
         wit_ai_response = "Could not request results from Wit.ai service; {0}".format(e)
 
+    print google_response
     print wit_ai_response
 
     return google_response, wit_ai_response
@@ -51,7 +52,7 @@ def background_listen():
     """
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print("Say something!")
+        print("*** Background Listening ***")
         audio = r.listen(source)
 
     magic_word_status = False
@@ -89,15 +90,13 @@ def background_listen():
 
 
 def run_speech_rec():
-
     background = False
-    while background == False:
+    while not background:
         background = background_listen()
-        print background
-        if background == True:
+        print "Magic Word Status: ", background
+        if background:
             break
     command = start_speech_rec()
-    print "say a command now!"
     return command
 
 run_speech_rec()
