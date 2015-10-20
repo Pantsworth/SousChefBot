@@ -1,10 +1,12 @@
-__author__ = 'DoctorWatson'
 import pyttsx
 
 class VoiceEngine:
+    """
+    Text to speech with pyttsx. Initialized as an object with associated functions.
+    """
     def __init__(self):
         self.engine = pyttsx.init()
-        self.engine.setProperty('rate', 160)
+        self.engine.setProperty('rate', 190)
         print self.engine.getProperty("voice")
 
     def test(self):

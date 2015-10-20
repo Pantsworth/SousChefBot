@@ -33,9 +33,9 @@ def jsonreq():
     recipe_ingredients = jsondata['ingredients']
     recipe_instructions = jsondata['instructions']
 
+    # text to speech engine test
     test_engine = speech_response.VoiceEngine()
     test_engine.say_this("computer? computer!")
-
 
     # print url
     # print recipe_title, " ", recipe_ingredients

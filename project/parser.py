@@ -40,12 +40,15 @@ def parse_recipe(url):
             print problem.returncode
             recipe_json = None
 
-
     # sometimes the PHP parse_recipe is too verbose. this corrects that issue.
     recipe_json = recipe_json.rpartition('}')
     recipe_json = recipe_json[0] + recipe_json[1]
     print recipe_json
     parsed_json = json.loads(recipe_json)
+
+    # clean up the ingredients formatting
+    if parsed_json['ingredients'][0]['list'] is not None:
+        parsed_json['ingredients'] = parsed_json['ingredients'][0]['list']
 
     return parsed_json
 
@@ -78,7 +81,7 @@ def human_readable(parsed_json):
     print "RECIPE RETRIVAL: SUCCESS"
     print "TITLE: ", parsed_json['title']
     print "YIELD: ", parsed_json['yield']
-    print "INGREDIENTS: ", parsed_json['ingredients'][0]['list']
+    print "INGREDIENTS: ", parsed_json['ingredients']
     print "INSTRUCTIONS: ", parsed_json['instructions']
 
     return
@@ -93,27 +96,47 @@ def find_cooking_tools(steps, knowledge_base):
     """
     wares = knowledge_base.cooking_wares
     tool_list = []
-    for e in steps[0]:
+    for e in steps[0]['list']:
         e = e.lower()
         for tool in wares:
             if tool in e and tool not in tool_list:
                 e = e.replace(tool, '')
                 tool_list.append(tool)
-                print tool
+    print tool_list
     return tool_list
+
+def find_cooking_methods(steps, knowledge_base):
+    """
+    finds cooking methods by comparing step string to cooking_terms.txt.
+    Avoids duplicates by replacing matched methods with empty string.
+    :param steps:
+    :return: method list as list of words
+    """
+    verbiage = knowledge_base.cooking_terms
+    method_list = []
+    for step in steps[0]['list']:
+        step = step.lower()
+        for method in verbiage:
+            if method in step and method not in method_list:
+                step = step.replace(method, '')
+                method_list.append(method)
+    print method_list
+    return method_list
 
 
 # def startup():
 #     k_base = kb.KnowledgeBase()
 #     k_base.load()
-#     info = parse_recipe("http://allrecipes.com/recipe/240061/karens-italian-pan-fried-chicken/?internalSource=staff%20pick&referringContentType=home%20page/")
+#     info = parse_recipe("http://allrecipes.com/recipe/19400/lasagna-alfredo/?internalSource=hn_carousel%2002_Lasagna%20Alfredo&referringId=502&referringContentType=recipe%20hub&referringPosition=carousel%2002")
 #     human_readable(info)
 #     find_cooking_tools(info['instructions'], k_base)
+#     find_cooking_methods(info['instructions'], k_base)
 #     return
-
+#
+# startup()
 
 # human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
 
-# startup()
+
 # print platform.system()
 
