@@ -100,28 +100,3 @@ def run_speech_rec():
     return command
 
 run_speech_rec()
-
-# if 'sous chef' in r.recognize_wit(audio, key='AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO'):
-#     print('yes')
-# else:
-#     print("no")
-
-# # recognize speech using IBM Speech to Text
-# IBM_USERNAME = "INSERT IBM SPEECH TO TEXT USERNAME HERE" # IBM Speech to Text usernames are strings of the form XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-# IBM_PASSWORD = "INSERT IBM SPEECH TO TEXT PASSWORD HERE" # IBM Speech to Text passwords are mixed-case alphanumeric strings
-# try:
-#     print("IBM Speech to Text thinks you said " + r.recognize_ibm(audio, username=IBM_USERNAME, password=IBM_PASSWORD))
-# except sr.UnknownValueError:
-#     print("IBM Speech to Text could not understand audio")
-# except sr.RequestError as e:
-#     print("Could not request results from IBM Speech to Text service; {0}".format(e))
-#
-# # recognize speech using AT&T Speech to Text
-# ATT_APP_KEY = "INSERT AT&T SPEECH TO TEXT APP KEY HERE" # AT&T Speech to Text app keys are 32-character lowercase alphanumeric strings
-# ATT_APP_SECRET = "INSERT AT&T SPEECH TO TEXT APP SECRET HERE" # AT&T Speech to Text app secrets are 32-character lowercase alphanumeric strings
-# try:
-#     print("AT&T Speech to Text thinks you said " + r.recognize_att(audio, app_key=ATT_APP_KEY, app_secret=ATT_APP_SECRET))
-# except sr.UnknownValueError:
-#     print("AT&T Speech to Text could not understand audio")
-# except sr.RequestError as e:
-#     print("Could not request results from AT&T Speech to Text service; {0}".format(e))
