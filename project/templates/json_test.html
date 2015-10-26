@@ -38,10 +38,14 @@
             {% for item in html_ingredients[0]['list'] %}
             <li>{{item}}</li>
             {% endfor %}
-            </ul>
+          </ul>
           <h4>Instructions: </h4>
-          <ul>{% for item in html_instructions[0]['list'] %}
-            <li>{{item}}</li>
+          <ul class="collapsible popout" data-collapsible="accordian">
+            {% for item in html_instructions[0]['list'] %}
+            <li>
+              <div class="collapsible-header">Step {{item.index}}</div>
+              <div class="collapsible-body"><p>{{item}}</p>
+            </li>
             {% endfor %}
           </ul>
       </div>
