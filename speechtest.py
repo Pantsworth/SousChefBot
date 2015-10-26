@@ -1,5 +1,7 @@
 __author__ = 'DoctorWatson'
 
+#deprecated.
+
 # NOTE: this example requires PyAudio because it uses the Microphone class
 import speech_recognition as sr
 
