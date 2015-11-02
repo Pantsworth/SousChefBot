@@ -89,6 +89,21 @@ def background_listen():
     return magic_word_status
 
 
+
+def wit_call(speechQuery):
+    '''
+      expects a string with the parsed query 
+      returns json object with info
+    '''
+    url = "https://api.wit.ai/message?v=20151102&q=" + speechQuery
+    auth_token = "4PRXFOGEMZFETD7BCQ56YDMC5MV4FXVZ"
+    req = urllib2.Request(url, None, {"Authorization": "Bearer %s" %auth_token})
+    response=urllib2.urlopen(req)
+    html = response.read()
+    json_obj = json.loads(html)
+    return json_obj
+
+
 def run_speech_rec():
     background = False
     while not background:
