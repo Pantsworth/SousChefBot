@@ -1,10 +1,12 @@
 __author__ = 'DoctorWatson'
-
+# -- coding: utf-8 --
 # NOTE: this example requires PyAudio because it uses the Microphone class
 
 import speech_recognition as sr
 import re
 import speech_response
+import urllib2
+import json
 
 # obtain audio from the microphone
 def start_speech_rec():
@@ -89,13 +91,14 @@ def background_listen():
     return magic_word_status
 
 
-
 def wit_call(speechQuery):
     '''
       expects a string with the parsed query 
+      ex: "how do you mash potatoes?"
       returns json object with info
     '''
-    url = "https://api.wit.ai/message?v=20151102&q=" + speechQuery
+    s = urllib2.quote(speechQuery)
+    url = "https://api.wit.ai/message?v=20151102&q=" + s
     auth_token = "4PRXFOGEMZFETD7BCQ56YDMC5MV4FXVZ"
     req = urllib2.Request(url, None, {"Authorization": "Bearer %s" %auth_token})
     response=urllib2.urlopen(req)
