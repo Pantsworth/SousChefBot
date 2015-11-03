@@ -1,0 +1,38 @@
+{
+    "title": "Grilled Shrimp Caprese",
+    "description": "\"Grilled shrimp over angel hair pasta with melted mozzarella, basil, and tomatoes in a garlic butter sauce.\"",
+    "credits": "Gretchen",
+    "notes": "",
+    "yield": "6  servings",
+    "source": 1,
+    "url": "http://allrecipes.com/recipe/223194/grilled-shrimp-caprese/?internalSource=search%20result&referringContentType=search%20results\r",
+    "categories": [],
+    "photo_url": "http://images.media-allrecipes.com/userphotos/720x405/849082.jpg",
+    "time": {
+        "prep": 15,
+        "cook": 20,
+        "total": 95
+    },
+    "ingredients": [
+        {
+            "name": "",
+            "list": [
+                "1 cup evaporated milk",
+                "1 cup brown sugar",
+                "3 egg yolks",
+                "1/2 cup butter",
+                "1 teaspoon vanilla extract",
+                "1 cup chopped pecans",
+                "1 1/3 cups flaked coconut"
+            ]
+        }
+    ],
+    "instructions": [
+        {
+            "name": "",
+            "list": [
+                "In a large saucepan combine evaporated milk, brown sugar, egg yolks, butter and vanilla. Cook over low heat, stirring constantly, until thick. Remove from heat and stir in pecans and coconut. Let cool to room temperature before spreading on cake."
+            ]
+        }
+    ]
+}
