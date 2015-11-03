@@ -92,4 +92,14 @@ def read_specific_lines(file_name, start, end):
                 result.append(line.lower())
     return result
 
+def find_substitute(old_ingredient, kb):
+    subs = kb.substitutions
+    possible_substitutions = []
+    for sub in subs:
+        if sub.food_in.name == old_ingredient:
+            possible_substitutions.append(sub.food_out)
+    if not possible_substitutions:
+        possible_substitutions = None
+    return possible_substitutions
+
 

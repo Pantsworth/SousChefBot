@@ -123,7 +123,6 @@ def find_cooking_methods(steps, knowledge_base):
     print method_list
     return method_list
 
-
 # def startup():
 #     k_base = kb.KnowledgeBase()
 #     k_base.load()

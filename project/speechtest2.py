@@ -22,20 +22,20 @@ def start_speech_rec():
     google_response = ""
     wit_ai_response = ""
     # recognize speech using Google Speech Recognition
-    try:
-        # for testing purposes, we're just using the default API key
-        # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
-        # instead of `r.recognize_google(audio)`
-        google_response = ("Google Speech Recognition thinks you said " + r.recognize_google(audio))
-    except sr.UnknownValueError:
-        google_response = "Google Speech Recognition could not understand audio"
-    except sr.RequestError as e:
-        google_response = ("Could not request results from Google Speech Recognition service; {0}".format(e))
+    # try:
+    #     # for testing purposes, we're just using the default API key
+    #     # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
+    #     # instead of `r.recognize_google(audio)`
+    #     google_response = ("Google Speech Recognition thinks you said " + r.recognize_google(audio))
+    # except sr.UnknownValueError:
+    #     google_response = "Google Speech Recognition could not understand audio"
+    # except sr.RequestError as e:
+    #     google_response = ("Could not request results from Google Speech Recognition service; {0}".format(e))
 
     # recognize speech using Wit.ai
     WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
     try:
-        wit_ai_response = "Wit.ai thinks you said " + r.recognize_wit(audio, key=WIT_AI_KEY)
+        wit_ai_response = "Wit.ai thinks you said: " + r.recognize_wit(audio, key=WIT_AI_KEY)
     except sr.UnknownValueError:
         wit_ai_response = "Wit.ai could not understand audio"
     except sr.RequestError as e:
@@ -44,7 +44,7 @@ def start_speech_rec():
     print google_response
     print wit_ai_response
 
-    return google_response, wit_ai_response
+    return wit_ai_response
 
 
 def background_listen():
@@ -58,20 +58,20 @@ def background_listen():
         audio = r.listen(source)
 
     magic_word_status = False
-    # google_response = ""
-    # wit_ai_response = ""
-    # recognize speech using Google Speech Recognition
-    try:
-        # for testing purposes, we're just using the default API key
-        # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
-        # instead of `r.recognize_google(audio)`
-        print("Google Speech Recognition thinks you said " + r.recognize_google(audio))
-    except sr.UnknownValueError:
-        google_response = "Google Speech Recognition could not understand audio"
-        print("Google Speech Recognition could not understand audio")
-    except sr.RequestError as e:
-        print("Could not request results from Google Speech Recognition service; {0}".format(e))
-        google_response = ("Could not request results from Google Speech Recognition service; {0}".format(e))
+    # # google_response = ""
+    # # wit_ai_response = ""
+    # # recognize speech using Google Speech Recognition
+    # try:
+    #     # for testing purposes, we're just using the default API key
+    #     # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
+    #     # instead of `r.recognize_google(audio)`
+    #     print("Google Speech Recognition thinks you said " + r.recognize_google(audio))
+    # except sr.UnknownValueError:
+    #     google_response = "Google Speech Recognition could not understand audio"
+    #     print("Google Speech Recognition could not understand audio")
+    # except sr.RequestError as e:
+    #     print("Could not request results from Google Speech Recognition service; {0}".format(e))
+    #     google_response = ("Could not request results from Google Speech Recognition service; {0}".format(e))
 
     # recognize speech using Wit.ai
     WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
@@ -115,6 +115,8 @@ def run_speech_rec():
         if background:
             break
     command = start_speech_rec()
-    return command
+    result = wit_call(command)
+    print result
+    return result
 
 run_speech_rec()
