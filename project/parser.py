@@ -8,6 +8,7 @@ import urllib2
 import platform
 import json
 from parser_package import kb
+from project import recipe
 
 
 def parse_recipe(url):
@@ -50,6 +51,9 @@ def parse_recipe(url):
     if parsed_json['ingredients'][0]['list'] is not None:
         parsed_json['ingredients'] = parsed_json['ingredients'][0]['list']
 
+    new_recipe = recipe.Recipe(parsed_json['title'], parsed_json['ingredients'], parsed_json['instructions'])
+    print new_recipe.title, new_recipe.ingredients, new_recipe.instructions
+    print parsed_json['title']
     return parsed_json
 
 
@@ -136,6 +140,4 @@ def find_cooking_methods(steps, knowledge_base):
 
 # human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
 
-
-# print platform.system()
 

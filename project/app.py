@@ -35,7 +35,7 @@ def jsonreq():
 
     # text to speech engine test
     test_engine = speech_response.VoiceEngine()
-    test_engine.say_this("computer? computer!")
+    # test_engine.say_this("computer? computer!")
 
     # print url
     # print recipe_title, " ", recipe_ingredients

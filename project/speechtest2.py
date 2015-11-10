@@ -18,31 +18,19 @@ def start_speech_rec():
     with sr.Microphone() as source:
         print("*** Yes master? ***")
         audio = r.listen(source)
-
-    google_response = ""
     wit_ai_response = ""
-    # recognize speech using Google Speech Recognition
-    # try:
-    #     # for testing purposes, we're just using the default API key
-    #     # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
-    #     # instead of `r.recognize_google(audio)`
-    #     google_response = ("Google Speech Recognition thinks you said " + r.recognize_google(audio))
-    # except sr.UnknownValueError:
-    #     google_response = "Google Speech Recognition could not understand audio"
-    # except sr.RequestError as e:
-    #     google_response = ("Could not request results from Google Speech Recognition service; {0}".format(e))
 
     # recognize speech using Wit.ai
     WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
     try:
-        wit_ai_response = "Wit.ai thinks you said: " + r.recognize_wit(audio, key=WIT_AI_KEY)
+        wit_ai_response = r.recognize_wit(audio, key=WIT_AI_KEY)
     except sr.UnknownValueError:
         wit_ai_response = "Wit.ai could not understand audio"
     except sr.RequestError as e:
         wit_ai_response = "Could not request results from Wit.ai service; {0}".format(e)
 
-    print google_response
-    print wit_ai_response
+    # print google_response
+    print "Wit.ai thinks you said: " + wit_ai_response
 
     return wit_ai_response
 
@@ -58,20 +46,7 @@ def background_listen():
         audio = r.listen(source)
 
     magic_word_status = False
-    # # google_response = ""
-    # # wit_ai_response = ""
-    # # recognize speech using Google Speech Recognition
-    # try:
-    #     # for testing purposes, we're just using the default API key
-    #     # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
-    #     # instead of `r.recognize_google(audio)`
-    #     print("Google Speech Recognition thinks you said " + r.recognize_google(audio))
-    # except sr.UnknownValueError:
-    #     google_response = "Google Speech Recognition could not understand audio"
-    #     print("Google Speech Recognition could not understand audio")
-    # except sr.RequestError as e:
-    #     print("Could not request results from Google Speech Recognition service; {0}".format(e))
-    #     google_response = ("Could not request results from Google Speech Recognition service; {0}".format(e))
+    # wit_ai_response = ""
 
     # recognize speech using Wit.ai
     WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
@@ -101,13 +76,14 @@ def wit_call(speechQuery):
     url = "https://api.wit.ai/message?v=20151102&q=" + s
     auth_token = "4PRXFOGEMZFETD7BCQ56YDMC5MV4FXVZ"
     req = urllib2.Request(url, None, {"Authorization": "Bearer %s" %auth_token})
-    response=urllib2.urlopen(req)
+    response = urllib2.urlopen(req)
     html = response.read()
     json_obj = json.loads(html)
     return json_obj
 
 
 def run_speech_rec():
+    print "here"
     background = False
     while not background:
         background = background_listen()
@@ -117,6 +93,10 @@ def run_speech_rec():
     command = start_speech_rec()
     result = wit_call(command)
     print result
+    print result['_text']
+    if result:
+        test_engine = speech_response.VoiceEngine()
+        test_engine.say_this(result['_text'])
     return result
 
-run_speech_rec()
+# run_speech_rec()

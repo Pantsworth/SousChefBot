@@ -1,4 +1,5 @@
 import pyttsx
+from parser_package import kb
 
 class VoiceEngine:
     """
@@ -22,8 +23,26 @@ class VoiceEngine:
             self.engine.say("Violet Indigo Blue Green Yellow Orange Red")
             self.engine.say("Apple Banana Cherry Date Guava")
         self.engine.runAndWait()
+        return
 
     def say_this(self, phrase):
         self.engine.say(phrase)
         self.engine.runAndWait()
+        print "it is said"
         return
+
+
+
+
+def choose_response(recipe_object, wit_input):
+    """
+    Charlie and Jingming
+    Start with reading ingredient amounts, work up to how_to
+
+    :param recipe_object: recipe object with state
+    :param wit_input: json object from wit
+        ex. {u'outcomes': [{u'entities': {}, u'confidence': 0.742, u'intent': u'get_time', u'_text': u'Wit.ai thinks you
+         said: yeah'}], u'msg_id': u'5262a8bf-a25a-4183-bc42-a4cd1807e20e', u'_text': u'Wit.ai thinks you said: yeah'}
+    :return: string that is an appropriate speech response
+    """
+    return
