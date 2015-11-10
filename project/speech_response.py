@@ -34,7 +34,7 @@ class VoiceEngine:
 
 
 
-def choose_response(recipe_object, wit_input):
+def choose_response(recipe_object, wit_input, kb_object):
     """
     Charlie and Jingming
     Start with reading ingredient amounts, work up to how_to
@@ -43,6 +43,7 @@ def choose_response(recipe_object, wit_input):
     :param wit_input: json object from wit
         ex. {u'outcomes': [{u'entities': {}, u'confidence': 0.742, u'intent': u'get_time', u'_text': u'Wit.ai thinks you
          said: yeah'}], u'msg_id': u'5262a8bf-a25a-4183-bc42-a4cd1807e20e', u'_text': u'Wit.ai thinks you said: yeah'}
+    :param kb_object: our knowledge base
     :return: string that is an appropriate speech response
     """
     return
