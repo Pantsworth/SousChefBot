@@ -8,7 +8,7 @@ import urllib2
 import platform
 import json
 from parser_package import kb
-from project import recipe
+import recipe
 
 
 def parse_recipe(url):

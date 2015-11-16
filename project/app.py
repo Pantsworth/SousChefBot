@@ -2,12 +2,13 @@ import sys
 import os
 
 # sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from project import parser
+import parser
 from flask import Flask, render_template, request
-from project import speech_response
+import speech_response
 
 app = Flask(__name__)
 
+    #text input
 
 @app.route('/')
 def index():
@@ -17,6 +18,7 @@ def index():
 @app.route('/hello')
 def hello():
     return render_template('hello.html')
+
 
 
 @app.route('/json_test', methods=['GET', 'POST'])
@@ -35,11 +37,15 @@ def jsonreq():
 
     # text to speech engine test
     test_engine = speech_response.VoiceEngine()
-    # test_engine.say_this("computer? computer!")
+    test_engine.say_this("computer? computer!")
+
+    query = request.json_test['query-text']
+    print query
+
 
     # print url
     # print recipe_title, " ", recipe_ingredients
-    return render_template('json_test.html', html_title=recipe_title, html_yield=recipe_yield,
+    return render_template('json_test.html',html_title=recipe_title, html_yield=recipe_yield,
                            html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata=jsondata)
 
 
