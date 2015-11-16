@@ -63,7 +63,7 @@ def choose_response(recipe_object, wit_input, kb_object):
     if intent == 'get_end':
         response = "stopping"
 
-    elif intent == 'get_ingredient':  # need database not exist in recipe or maybe can omit, not very valuable questions
+    elif intent == 'get_ingredient':  #need database not exist in recipe or maybe can omit, not very valuable questions
         #TODO
         response = "error"
 
@@ -92,7 +92,7 @@ def choose_response(recipe_object, wit_input, kb_object):
         else:
             response = "could not find time"
 
-    elif intent=='how_to_use_tool':  # need database, not exist in recipe
+    elif intent=='how_to_use_tool':  #need database, not exist in recipe
         #TODO
         response = "error"
 
@@ -105,7 +105,7 @@ def choose_response(recipe_object, wit_input, kb_object):
         else:
             response = "could not find substitute ingredient"
 
-    elif intent=='navigate_back':  # need step number, haven't find
+    elif intent=='navigate_back':  #need step number, haven't find
         #TODO
         response = "error"
 
@@ -119,7 +119,7 @@ def choose_response(recipe_object, wit_input, kb_object):
     elif intent == 'start_up':
         response = "Welcome to SouChefBot"
 
-    elif intent == 'technique_how_to':   # need database, not exist in recipe
+    elif intent == 'technique_how_to':   #need database, not exist in recipe
         #TODO
         response = "error"
 
