@@ -1,5 +1,5 @@
 __author__ = 'DoctorWatson'
-from project import util
+import util
 
 
 class KnowledgeBase:
