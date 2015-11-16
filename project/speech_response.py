@@ -1,13 +1,12 @@
 import pyttsx
 from parser_package import kb
-import recipe
-import speechtest2
+import json
+import parser
 
-'''
 class VoiceEngine:
-
+    """
     Text to speech with pyttsx. Initialized as an object with associated functions.
-
+    """
     def __init__(self):
         self.engine = pyttsx.init()
         self.engine.setProperty('rate', 190)
@@ -33,16 +32,9 @@ class VoiceEngine:
         self.engine.runAndWait()
         print "it is said"
         return
-'''
 
 
-def Voice(phrase):
-        engine = pyttsx.init()
-        engine.setProperty('rate', 190)
-        engine.say(phrase)
-        engine.runAndWait()
-        print "it is said"+ phrase
-        return
+
 
 def choose_response(recipe_object, wit_input, kb_object):
     """
@@ -57,86 +49,76 @@ def choose_response(recipe_object, wit_input, kb_object):
     :return: string that is an appropriate speech response
     """
     #wit_input = {u'outcomes': [{u'entities': {}, u'confidence': 0.742, u'intent': u'get_time', u'_text': u'Wit.ai thinks you said: yeah'}], u'msg_id': u'5262a8bf-a25a-4183-bc42-a4cd1807e20e', u'_text': u'Wit.ai thinks you said: yeah'}
-
     intent = wit_input[u'outcomes'][0][u'intent']
+    print wit_input['outcomes']
+    wanted_ingredient = None
+
     response = ""
     if intent == 'get_end':
         response = "stopping"
-
-    elif intent == 'get_ingredient':  #need database not exist in recipe or maybe can omit, not very valuable questions
+    elif intent == 'get_ingredient':
         #TODO
         response = "error"
 
     elif intent == 'get_ingredient_amount':
-        wanted_ingredient = wit_input[u'outcomes'][0][u'entities']
-        list_ingredient = recipe_object.ingredients
-        indices = [i for i, s in enumerate(list_ingredient) if wanted_ingredient in s]
-        if indices:
-            response = list_ingredient[indices[0]]
-        else:
-            response = "could not find ingredient"
+        wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
+
+        try:
+            wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
+        except KeyError:
+            # wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0]
+            wanted_ingredient = None
+            return False
+
+        print "Wanted Ingredient is: ", wanted_ingredient
+        for ingredient in recipe_object.ingredients:
+            print ingredient
+            if wanted_ingredient in ingredient:
+                print "Found ingredient: ", wanted_ingredient
+                return ingredient
 
     elif intent == 'get_temperature':
-        want_temperature = recipe_object.instructions
-        indices = [i for i, s in enumerate(want_temperature) if 'temperature' in s]
-        if indices:
-            response = want_temperature[indices[0]]
-        else:
-            response = "could not find temperature"
-
+        #TODO
+        response = "error"
     elif intent == 'get_time':
-        want_time = recipe_object.instructions
-        indices = [i for i, s in enumerate(want_time) if 'time' in s]
-        if indices:
-            response = want_time[indices[0]]
-        else:
-            response = "could not find time"
-
-    elif intent=='how_to_use_tool':  #need database, not exist in recipe
         #TODO
         response = "error"
-
+    elif intent=='how_to_use_tool':
+        #TODO
+        response = "error"
     elif intent=='ingredient_substitute':
-        old_ingredient = wit_input[u'outcomes'][0][u'entities']
-        new_ingredient = kb_object.find_substitute
-        indices = [i for i, s in enumerate(new_ingredient) if old_ingredient in s]
-        if indices:
-            response = new_ingredient
-        else:
-            response = "could not find substitute ingredient"
-
-    elif intent=='navigate_back':  #need step number, haven't find
         #TODO
         response = "error"
-
-    elif intent == 'navigate_forward':
-        recipe_object.instructions=recipe_object.add_steps(recipe_object.instructions)
-        response = recipe_object.instructions
-
-    elif intent == 'read_recipe':
-        response = recipe_object.instructions
-
-    elif intent == 'start_up':
-        response = "Welcome to SouChefBot"
-
-    elif intent == 'technique_how_to':   #need database, not exist in recipe
+    elif intent=='navigate_back':
         #TODO
         response = "error"
-
-    elif intent == 'which_tool':
-        choose_tool = wit_input[u'outcomes'][0][u'entities']
-        list_tool = recipe_object.tools
-        indices = [i for i, s in enumerate(list_tool) if choose_tool in s]
-        if indices:
-            response = list_tool[indices[0]]
-        else:
-            response = "could not find tools"
-
+    elif intent=='navigate_forward':
+        #TODO
+        response = "error"
+    elif intent=='read_recipe':
+        #TODO
+        response = "error"
+    elif intent=='start_up':
+        #TODO
+        response = "error"
+    elif intent=='technique_how_to':
+        #TODO
+        response = "error"
+    elif intent=='which_tool':
+        #TODO
+        response = "error"
     else:
+        #TODO
         response = "unknown intent"
         print intent
     return response
 
 
-response = choose_response(recipe_object=recipe, wit_input=speechtest2.wit_call(speechQuery), kb_object=kb)  # where is the input of speechQuery?
-Voice(response)
+
+def response_test():
+    wit_json = {u'outcomes': [{u'entities': {u'food': [{u'suggested': True, u'type': u'value', u'value': u'salt'}, {u'type': u'value', u'value': u'cocoa'}]}, u'confidence': 0.977, u'intent': u'get_ingredient_amount', u'_text': u'how much vegetable oil do i need'}], u'msg_id': u'cd7fa98d-9407-483c-9d7d-746e319a6f0f', u'_text': u'how much vegetable oil do i need'}
+    recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+    choose_response(recipe, wit_json, None)
+    return
+
+# response_test()
