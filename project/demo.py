@@ -13,6 +13,7 @@ def demo_function(recipe_object):
     result = ""
     while ("stop" not in result):
         result = speechtest2.run_speech_rec()
+        speech_response.choose_response(recipe, result, None)
 
     print "DEMO IS CONCLUDED"
     return

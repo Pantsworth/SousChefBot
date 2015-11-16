@@ -54,8 +54,10 @@ def choose_response(recipe_object, wit_input, kb_object):
     elif intent == 'get_ingredient':
         #TODO
         response = "error"
+
     elif intent == 'get_ingredient_amount':
         wanted_ingredient = wit_input[u'outcomes'][0][u'entities']
+        print "Wanted Ingredient is: ", wanted_ingredient
         list_ingredient = recipe_object.ingredients
         indices = [i for i, s in enumerate(list_ingredient) if wanted_ingredient in s]
         if indices:

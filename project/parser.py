@@ -51,10 +51,13 @@ def parse_recipe(url):
     if parsed_json['ingredients'][0]['list'] is not None:
         parsed_json['ingredients'] = parsed_json['ingredients'][0]['list']
 
-    new_recipe = recipe.Recipe(parsed_json['title'], parsed_json['ingredients'], parsed_json['instructions'])
+    if parsed_json['instructions'][0]['list'] is not None:
+        parsed_json['instructions'] = parsed_json['instructions'][0]['list']
+
+    new_recipe = recipe.Recipe(parsed_json['title'], parsed_json['yield'], parsed_json['ingredients'], parsed_json['instructions'])
     print new_recipe.title, new_recipe.ingredients, new_recipe.instructions
     print parsed_json['title']
-    return parsed_json
+    return new_recipe
 
 
 def validate_url(url):
@@ -90,6 +93,16 @@ def human_readable(parsed_json):
 
     return
 
+def human_readable_object(recipe_object):
+    """prints human-readable version of recipe."""
+    # parsed_json = json.loads(recipe_json)
+    print "RECIPE OBJECT CREATION: SUCCESS"
+    print "TITLE: ", recipe_object.title
+    print "YIELD: ", recipe_object.servings
+    print "INGREDIENTS: ", recipe_object.ingredients
+    print "INSTRUCTIONS: ", recipe_object.instructions
+
+    return
 
 def find_cooking_tools(steps, knowledge_base):
     """
@@ -127,6 +140,15 @@ def find_cooking_methods(steps, knowledge_base):
     print method_list
     return method_list
 
+def find_temps(steps, knowledge_base):
+    """
+    find oven temps
+    :param steps:
+    :param knowledge_base:
+    :return:
+    """
+    return
+
 # def startup():
 #     k_base = kb.KnowledgeBase()
 #     k_base.load()
@@ -138,6 +160,6 @@ def find_cooking_methods(steps, knowledge_base):
 #
 # startup()
 
-# human_readable(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
+human_readable_object(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
 
 
