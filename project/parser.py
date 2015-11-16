@@ -48,7 +48,7 @@ def parse_recipe(url):
     parsed_json = json.loads(recipe_json)
 
     # clean up the ingredients formatting
-    if parsed_json['ingredients'][0]['list'] is not None:
+    if parsed_json['ingredients'][0] is not None:
         parsed_json['ingredients'] = parsed_json['ingredients'][0]['list']
 
     if parsed_json['instructions'][0]['list'] is not None:
@@ -160,6 +160,6 @@ def find_temps(steps, knowledge_base):
 #
 # startup()
 
-human_readable_object(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
+# human_readable_object(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"))
 
 
