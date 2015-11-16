@@ -140,3 +140,6 @@ def choose_response(recipe_object, wit_input, kb_object):
 
 response = choose_response(recipe_object=recipe, wit_input=speechtest2.wit_call(speechQuery), kb_object=kb)  # where is the input of speechQuery?
 Voice(response)
+
+
+
