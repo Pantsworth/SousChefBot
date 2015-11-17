@@ -28,25 +28,24 @@ def jsonreq():
     :return: an html page containing scraped recipe info
     """
     url = request.form['url']               # acquires URL from form.html
-    jsondata = parser.parse_recipe(url)     # parse html with our parser
+    recipe_object = parser.parse_recipe(url)     # parse html with our parser
 
-    recipe_title = jsondata['title']
-    recipe_yield = jsondata['yield']
-    recipe_ingredients = jsondata['ingredients']
-    recipe_instructions = jsondata['instructions']
+    recipe_title = recipe_object.title
+    recipe_yield = recipe_object.servings
+    recipe_ingredients = recipe_object.ingredients
+    recipe_instructions = recipe_object.instructions
 
-    # text to speech engine test
-    test_engine = speech_response.VoiceEngine()
-    test_engine.say_this("computer? computer!")
-
-    query = request.json_test['query-text']
-    print query
+    print recipe_object.ingredients
+    print recipe_object.instructions
+    #
+    # query = request.json_test['query-text']
+    # print query
 
 
     # print url
     # print recipe_title, " ", recipe_ingredients
-    return render_template('json_test.html',html_title=recipe_title, html_yield=recipe_yield,
-                           html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata=jsondata)
+    return render_template('json_test.html', html_title=recipe_title, html_yield=recipe_yield,
+                           html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata="")
 
 
 if __name__ == '__main__':
