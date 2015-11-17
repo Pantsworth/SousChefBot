@@ -44,3 +44,7 @@ class Recipe:
         self.title = json['title']
         self.ingredients = json['ingredients']
         self.instructions = json['instructions']
+
+    def next_step(self):
+        if self.current_step < len(self.instructions):
+            self.current_step = self.current_step + 1
