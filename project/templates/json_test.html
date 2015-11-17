@@ -35,13 +35,13 @@
           <h3>Yield: {{html_yield}}</h3>
           <h4>Ingredients: </h4>
           <ul>
-            {% for item in html_ingredients[0]['list'] %}
+            {% for item in html_ingredients %}
             <li>{{item}}</li>
             {% endfor %}
           </ul>
           <h4>Instructions: </h4>
           <ul class="collapsible popout" data-collapsible="accordian">
-            {% for item in html_instructions[0]['list'] %}
+            {% for item in html_instructions %}
             <li>
               <div class="collapsible-header">Step {{item.index}}</div>
               <div class="collapsible-body"><p>{{item}}</p>
