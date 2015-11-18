@@ -63,19 +63,8 @@ def jsonreq():
     Calls recipe parser and generates a response page.
     :return: an html page containing scraped recipe info
     """
-    #request.form['url']
-    #url = request.form['url']               # acquires URL from form.html
-    url = "http://allrecipes.com/recipe/10813/best-chocolate-chip-cookies/"
-    # jsondata = parser.parse_recipe(url)     # parse html with our parser
+    request.form['url']
 
-    recipe_title = ""
-    recipe_yield = ""
-    recipe_ingredients = ""
-    recipe_instructions = ""
-
-    # text to speech engine test
-    #test_engine = speech_response.VoiceEngine()
-    #test_engine.say_this("computer? computer!")
     url = request.form['url']               # acquires URL from form.html
     recipe_object = parser.parse_recipe(url)     # parse html with our parser
 
