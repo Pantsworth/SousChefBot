@@ -24,15 +24,12 @@ if async_mode is None:
 if async_mode == 'eventlet':
     import eventlet
     eventlet.monkey_patch()
-elif async_mode == 'gevent':
-    from gevent import monkey
-    monkey.patch_all()
+# elif async_mode == 'gevent':
+#     from gevent import monkey
+#     monkey.patch_all()
 
-import sys
-import os
-# sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import parser
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import time
 from threading import Thread
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
@@ -41,12 +38,14 @@ import speech_response
 import json
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "q"
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
+    print "hit background"
     while True:
         time.sleep(10)
         count += 1
@@ -67,12 +66,12 @@ def jsonreq():
     #request.form['url']
     #url = request.form['url']               # acquires URL from form.html
     url = "http://allrecipes.com/recipe/10813/best-chocolate-chip-cookies/"
-    jsondata = parser.parse_recipe(url)     # parse html with our parser
+    # jsondata = parser.parse_recipe(url)     # parse html with our parser
 
-    recipe_title = jsondata['title']
-    recipe_yield = jsondata['yield']
-    recipe_ingredients = jsondata['ingredients']
-    recipe_instructions = jsondata['instructions']
+    recipe_title = ""
+    recipe_yield = ""
+    recipe_ingredients = ""
+    recipe_instructions = ""
 
     # text to speech engine test
     #test_engine = speech_response.VoiceEngine()
@@ -82,11 +81,12 @@ def jsonreq():
     # print url
     # print recipe_title, " ", recipe_ingredients
     return render_template('json_test.html',html_title=recipe_title, html_yield=recipe_yield,
-                           html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata=jsondata)
+                           html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata="")
 
 @app.route('/')
 def index():
     global thread
+    print "index"
     if thread is None:
         thread = Thread(target=background_thread)
         thread.daemon = True
