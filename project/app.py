@@ -57,7 +57,12 @@ def background_thread():
 
 @app.route('/json_test', methods=['GET', 'POST'])
 def jsonreq():
-
+    global thread
+    print "index"
+    if thread is None:
+        thread = Thread(target=background_thread)
+        thread.daemon = True
+        thread.start()
     """
     Calls recipe parser and generates a response page.
     :return: an html page containing scraped recipe info
@@ -86,13 +91,7 @@ def jsonreq():
 
 @app.route('/')
 def index():
-    global thread
-    print "index"
-    if thread is None:
-        thread = Thread(target=background_thread)
-        thread.daemon = True
-        thread.start()
-    return render_template('index.html')
+    return render_template('form.html')
 
 
 @socketio.on('my event', namespace='/test')
