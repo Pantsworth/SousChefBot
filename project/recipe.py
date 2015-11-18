@@ -3,10 +3,11 @@ __author__ = 'Michael Nowakowski'
 
 class Recipe:
 
-    def __init__(self, title='', ingredients=None, instructions=None):
+    def __init__(self, title='', servings=0, ingredients=None, instructions=None):
         self.title = title
-        self.ingredients = []
-        self.instructions = []
+        self.servings = servings
+        self.ingredients = ingredients
+        self.instructions = instructions
         self.primary_method = 'none'
         self.methods = []
         self.tools = []
@@ -35,6 +36,9 @@ class Recipe:
 
     def change_title(self, new_title):
         self.title = new_title
+
+    def change_servings(self, new_servings):
+        self.servings = new_servings
 
     def parse_json(self, json):
         self.title = json['title']

@@ -7,6 +7,7 @@ import re
 import speech_response
 import urllib2
 import json
+import sys
 
 # obtain audio from the microphone
 def start_speech_rec():
@@ -94,9 +95,9 @@ def run_speech_rec():
     result = wit_call(command)
     print result
     print result['_text']
-    if result:
-        test_engine = speech_response.VoiceEngine()
-        test_engine.say_this(result['_text'])
+    # if result:
+    #     test_engine = speech_response.VoiceEngine()
+    #     test_engine.say_this(result['_text'])
     return result
 
 # run_speech_rec()

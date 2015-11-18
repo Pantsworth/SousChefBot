@@ -1,5 +1,7 @@
 import pyttsx
 from parser_package import kb
+import json
+import parser
 
 class VoiceEngine:
     """
@@ -48,20 +50,33 @@ def choose_response(recipe_object, wit_input, kb_object):
     """
     #wit_input = {u'outcomes': [{u'entities': {}, u'confidence': 0.742, u'intent': u'get_time', u'_text': u'Wit.ai thinks you said: yeah'}], u'msg_id': u'5262a8bf-a25a-4183-bc42-a4cd1807e20e', u'_text': u'Wit.ai thinks you said: yeah'}
     intent = wit_input[u'outcomes'][0][u'intent']
+    print wit_input['outcomes']
+    wanted_ingredient = None
+
     response = ""
     if intent == 'get_end':
         response = "stopping"
     elif intent == 'get_ingredient':
         #TODO
         response = "error"
+
     elif intent == 'get_ingredient_amount':
-        wanted_ingredient = wit_input[u'outcomes'][0][u'entities']
-        list_ingredient = recipe_object.ingredients
-        indices = [i for i, s in enumerate(list_ingredient) if wanted_ingredient in s]
-        if indices:
-            response = list_ingredient[indices[0]]
-        else:
-            response = "could not find ingredient"
+        wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
+
+        try:
+            wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
+        except KeyError:
+            # wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0]
+            wanted_ingredient = None
+            return False
+
+        print "Wanted Ingredient is: ", wanted_ingredient
+        for ingredient in recipe_object.ingredients:
+            print ingredient
+            if wanted_ingredient in ingredient:
+                print "Found ingredient: ", wanted_ingredient
+                return ingredient
+
     elif intent == 'get_temperature':
         #TODO
         response = "error"
@@ -97,3 +112,13 @@ def choose_response(recipe_object, wit_input, kb_object):
         response = "unknown intent"
         print intent
     return response
+
+
+
+def response_test():
+    wit_json = {u'outcomes': [{u'entities': {u'food': [{u'suggested': True, u'type': u'value', u'value': u'salt'}, {u'type': u'value', u'value': u'cocoa'}]}, u'confidence': 0.977, u'intent': u'get_ingredient_amount', u'_text': u'how much vegetable oil do i need'}], u'msg_id': u'cd7fa98d-9407-483c-9d7d-746e319a6f0f', u'_text': u'how much vegetable oil do i need'}
+    recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+    choose_response(recipe, wit_json, None)
+    return
+
+# response_test()
