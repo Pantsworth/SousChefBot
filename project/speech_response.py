@@ -56,6 +56,7 @@ def choose_response(recipe_object, wit_input, kb_object):
     response = ""
     if intent == 'get_end':
         response = "stopping"
+
     elif intent == 'get_ingredient':
         #TODO
         response = "error"
@@ -74,11 +75,15 @@ def choose_response(recipe_object, wit_input, kb_object):
             return False
 
         print "Wanted Ingredient is: ", wanted_ingredient
+        ingredients_found = None
         for ingredient in recipe_object.ingredients:
-            print ingredient
             if wanted_ingredient in ingredient:
                 print "Found ingredient: ", wanted_ingredient
-                return ingredient
+                if ingredients_found:
+                    ingredients_found = ingredient + " AND " + ingredients_found
+                else:
+                    ingredients_found = ingredient
+        response = ingredients_found
 
     elif intent == 'get_temperature':
         want_temperature = recipe_object.instructions
@@ -106,7 +111,7 @@ def choose_response(recipe_object, wit_input, kb_object):
         #TODO
         response = "previous step"
 
-    elif intent=='navigate_forward':
+    elif intent == 'navigate_forward':
         recipe_object.next_step()
         print recipe_object.instructions[recipe_object.current_step]
         response = "Moving to next step. Next step is " + recipe_object.instructions[recipe_object.current_step]

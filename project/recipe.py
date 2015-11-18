@@ -48,3 +48,7 @@ class Recipe:
     def next_step(self):
         if self.current_step < len(self.instructions):
             self.current_step = self.current_step + 1
+
+    def previous_step(self):
+        if self.current_step is not 0:
+            self.current_step = self.current_step - 1

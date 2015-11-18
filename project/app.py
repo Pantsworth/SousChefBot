@@ -45,7 +45,6 @@ thread = None
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
-    print "hit background"
     while True:
         time.sleep(10)
         count += 1
