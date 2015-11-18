@@ -61,7 +61,10 @@ def choose_response(recipe_object, wit_input, kb_object):
         response = "error"
 
     elif intent == 'get_ingredient_amount':
-        wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
+        if not wit_input[u'outcomes'][0][u'entities']:
+            return response
+        else:
+            wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
 
         try:
             wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
@@ -78,11 +81,21 @@ def choose_response(recipe_object, wit_input, kb_object):
                 return ingredient
 
     elif intent == 'get_temperature':
-        #TODO
-        response = "error"
+        want_temperature = recipe_object.instructions
+        indices = [i for i, s in enumerate(want_temperature) if 'temperature' in s]
+        if indices:
+            response = want_temperature[indices[0]]
+        else:
+            response = "could not find temperature"
+
     elif intent == 'get_time':
-        #TODO
-        response = "error"
+        want_time = recipe_object.instructions
+        indices = [i for i, s in enumerate(want_time) if 'time' in s]
+        if indices:
+            response = want_time[indices[0]]
+        else:
+            response = "could not find time"
+            
     elif intent=='how_to_use_tool':
         #TODO
         response = "error"
@@ -91,10 +104,13 @@ def choose_response(recipe_object, wit_input, kb_object):
         response = "error"
     elif intent=='navigate_back':
         #TODO
-        response = "error"
+        response = "previous step"
+
     elif intent=='navigate_forward':
-        #TODO
-        response = "error"
+        recipe_object.next_step()
+        print recipe_object.instructions[recipe_object.current_step]
+        response = "Moving to next step. Next step is " + recipe_object.instructions[recipe_object.current_step]
+
     elif intent=='read_recipe':
         #TODO
         response = "error"
@@ -104,9 +120,16 @@ def choose_response(recipe_object, wit_input, kb_object):
     elif intent=='technique_how_to':
         #TODO
         response = "error"
-    elif intent=='which_tool':
-        #TODO
-        response = "error"
+
+    elif intent == 'which_tool':
+        choose_tool = wit_input[u'outcomes'][0][u'entities']
+        list_tool = recipe_object.tools
+        indices = [i for i, s in enumerate(list_tool) if choose_tool in s]
+        if indices:
+            response = list_tool[indices[0]]
+        else:
+            response = "could not find tools"
+
     else:
         #TODO
         response = "unknown intent"

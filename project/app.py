@@ -76,6 +76,19 @@ def jsonreq():
     # text to speech engine test
     #test_engine = speech_response.VoiceEngine()
     #test_engine.say_this("computer? computer!")
+    url = request.form['url']               # acquires URL from form.html
+    recipe_object = parser.parse_recipe(url)     # parse html with our parser
+
+    recipe_title = recipe_object.title
+    recipe_yield = recipe_object.servings
+    recipe_ingredients = recipe_object.ingredients
+    recipe_instructions = recipe_object.instructions
+
+    print recipe_object.ingredients
+    print recipe_object.instructions
+    #
+    # query = request.json_test['query-text']
+    # print query
 
 
     # print url
@@ -160,7 +173,6 @@ def test_connect():
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
     print('Client disconnected', request.sid)
-
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
