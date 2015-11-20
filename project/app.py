@@ -34,7 +34,8 @@ import time
 from threading import Thread
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
-import speech_response
+import speech_response, speechtest2
+import threading
 import json
 
 app = Flask(__name__)
@@ -53,7 +54,16 @@ def background_thread():
                       namespace='/test')
 
     #text input
-  
+
+def demo_function():
+    recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+    result = ""
+    while ("stop" not in result):
+        result = speechtest2.run_speech_rec()
+        response = speech_response.choose_response(recipe, result, None)
+        if response:
+            test_engine = speech_response.VoiceEngine()
+            test_engine.say_this(response)
 
 @app.route('/')
 def jsonreq():
@@ -75,6 +85,7 @@ def index():
     recipe_yield = recipe_object.servings
     recipe_ingredients = recipe_object.ingredients
     recipe_instructions = recipe_object.instructions
+
     return render_template('recipe.html', html_title=recipe_title, html_yield=recipe_yield,
                            html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata="")
 
@@ -84,6 +95,17 @@ def test_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
          {'data': message['data'], 'count': session['receive_count']})
+
+
+@socketio.on('speech_rec', namespace='/test')
+def speech_rec_start(message):
+    print "Starting Speech Recognition"
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response',
+         {'data': "Starting Speech Recognition", 'count': session['receive_count']})
+    speech_thread = Thread(target=demo_function())
+    print "welp"
+    speech_thread.start()
 
 
 @socketio.on('my broadcast event', namespace='/test')
@@ -145,6 +167,7 @@ def test_connect():
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
     print('Client disconnected', request.sid)
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

@@ -30,7 +30,6 @@ class VoiceEngine:
     def say_this(self, phrase):
         self.engine.say(phrase)
         self.engine.runAndWait()
-        print "it is said"
         return
 
 

@@ -33,7 +33,7 @@ def parse_recipe(url):
 
     else:
         fn = os.path.join(os.path.dirname(__file__), 'RecipeParser/bin/parse_recipe')
-        print fn
+        # print fn
         try:
             recipe_json = subprocess.check_output([fn, url, "json"])
         except subprocess.CalledProcessError as problem:
@@ -44,7 +44,7 @@ def parse_recipe(url):
     # sometimes the PHP parse_recipe is too verbose. this corrects that issue.
     recipe_json = recipe_json.rpartition('}')
     recipe_json = recipe_json[0] + recipe_json[1]
-    print recipe_json
+    # print recipe_json
     parsed_json = json.loads(recipe_json)
 
     # clean up the ingredients formatting
@@ -55,8 +55,8 @@ def parse_recipe(url):
         parsed_json['instructions'] = parsed_json['instructions'][0]['list']
 
     new_recipe = recipe.Recipe(parsed_json['title'], parsed_json['yield'], parsed_json['ingredients'], parsed_json['instructions'])
-    print new_recipe.title, new_recipe.ingredients, new_recipe.instructions
-    print parsed_json['title']
+    # print new_recipe.title, new_recipe.ingredients, new_recipe.instructions
+    # print parsed_json['title']
     return new_recipe
 
 
