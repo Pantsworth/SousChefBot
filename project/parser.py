@@ -63,7 +63,7 @@ def parse_recipe(url):
     new_recipe.methods = find_cooking_methods(new_recipe.instructions, k_base)
 
     for i in range(len(new_recipe.ingredients)):
-        new_recipe.ingredients[i] = new_recipe.ingredients[i].encode(encoding='utf-8', errors='strict')
+        new_recipe.ingredients[i] = util.handle_fractions(new_recipe.ingredients[i].encode(encoding='utf-8', errors='strict'))
 
     for i in range(len(new_recipe.instructions)):
         new_recipe.instructions[i] = util.sanitize_step(new_recipe.instructions[i])
@@ -117,7 +117,6 @@ def human_readable_object(recipe_object):
     print "YIELD: ", recipe_object.servings
     print "INGREDIENTS: ", recipe_object.ingredients
     print "INSTRUCTIONS: ", recipe_object.instructions
-
     return
 
 def find_cooking_tools(steps, knowledge_base):

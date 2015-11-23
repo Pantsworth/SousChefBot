@@ -9,7 +9,7 @@ import util
 def demo_function(recipe_object):
 
     # preamble for human-friendly opening
-    preamble = False
+    preamble = True
 
     result = ""
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
@@ -29,7 +29,7 @@ def demo_function(recipe_object):
         speech_engine.say_this("The first step is: " + util.sanitize_step(recipe.instructions[recipe.current_step]))
 
         speech_engine.say_this("Feel free to ask me any questions. Just say computer, computer to get me to wake up. After I say yes, ask me your question.")
-        speech_engine.say_this("I'm listening now.")
+        speech_engine.say_this("I am listening now.")
 
     while ("stop" not in result):
         result = speechtest2.run_speech_rec()

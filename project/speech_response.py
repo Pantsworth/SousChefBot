@@ -119,11 +119,6 @@ def choose_response(recipe_object, wit_input, kb_object):
             print temp_response
             response = temp_response
 
-        # indices = [i for i, s in enumerate(want_temperature) if 'temperature' in s]
-        # if indices:
-        #     response = want_temperature[indices[0]]
-        # else:
-        #     response = "could not find temperature"
     elif intent == 'list_ingredients':
         response = "Reading all ingredients"
         for ing in recipe_object.ingredients:
@@ -149,7 +144,8 @@ def choose_response(recipe_object, wit_input, kb_object):
     elif intent=='ingredient_substitute':
         #TODO
         response = "error"
-    
+
+    # #### NAVIGATION #### #
     elif intent=='navigate_back':
         if recipe_object.current_step is not 0:
             recipe_object.previous_step()
