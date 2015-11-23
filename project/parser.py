@@ -16,6 +16,8 @@ def parse_recipe(url):
     :param url: URL for recipe.
     :return: JSON recipe object, formatted by our delightful PHP library.
     """
+    k_base = kb.KnowledgeBase()
+    k_base.load()
 
     if validate_url(url) is None:
         return
@@ -55,6 +57,9 @@ def parse_recipe(url):
         parsed_json['instructions'] = parsed_json['instructions'][0]['list']
 
     new_recipe = recipe.Recipe(parsed_json['title'], parsed_json['yield'], parsed_json['ingredients'], parsed_json['instructions'])
+    new_recipe.tools = find_cooking_tools(new_recipe.instructions, k_base)
+    new_recipe.methods = find_cooking_methods(new_recipe.instructions, k_base)
+    # find_temps(new_recipe.instructions, k_base)
     # print new_recipe.title, new_recipe.ingredients, new_recipe.instructions
     # print parsed_json['title']
     return new_recipe
@@ -113,14 +118,16 @@ def find_cooking_tools(steps, knowledge_base):
     """
     wares = knowledge_base.cooking_wares
     tool_list = []
-    for e in steps[0]['list']:
+    for e in steps:
         e = e.lower()
         for tool in wares:
             if tool in e and tool not in tool_list:
+                # print tool
                 e = e.replace(tool, '')
                 tool_list.append(tool)
-    print tool_list
+    # print tool_list
     return tool_list
+
 
 def find_cooking_methods(steps, knowledge_base):
     """
@@ -131,23 +138,29 @@ def find_cooking_methods(steps, knowledge_base):
     """
     verbiage = knowledge_base.cooking_terms
     method_list = []
-    for step in steps[0]['list']:
+    for step in steps:
         step = step.lower()
         for method in verbiage:
             if method in step and method not in method_list:
                 step = step.replace(method, '')
                 method_list.append(method)
-    print method_list
+    # print method_list
     return method_list
 
-def find_temps(steps, knowledge_base):
-    """
-    find oven temps
-    :param steps:
-    :param knowledge_base:
-    :return:
-    """
-    return
+# def find_temps(steps, knowledge_base):
+#     """
+#     find oven temps
+#     :param steps:
+#     :param knowledge_base:
+#     :return:
+#     """
+#     for step in steps:
+#         if ("preheat" and "oven") in step:
+#             word_list = step.split()
+#             for i in range(len(word_list)):
+#                 if word_list[i+1] == "degrees":
+#                     print word_list[i]
+#     return
 
 # def startup():
 #     k_base = kb.KnowledgeBase()

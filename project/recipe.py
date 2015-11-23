@@ -52,3 +52,14 @@ class Recipe:
     def previous_step(self):
         if self.current_step is not 0:
             self.current_step = self.current_step - 1
+
+    def find_tools(self):
+        if self.tools == []:
+            return
+
+    def print_recipe(self):
+        print "RECIPE OBJECT CREATION: SUCCESS"
+        print "TITLE: ", self.title
+        print "YIELD: ", self.servings
+        print "INGREDIENTS: ", self.ingredients
+        print "INSTRUCTIONS: ", self.instructions

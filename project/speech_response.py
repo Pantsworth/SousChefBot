@@ -11,7 +11,7 @@ class VoiceEngine:
     def __init__(self):
         self.engine = pyttsx.init()
         self.engine.setProperty('rate', 190)
-        print self.engine.getProperty("voice")
+        # print self.engine.getProperty("voice")
 
     def test(self):
         voices = self.engine.getProperty('voices')
@@ -31,7 +31,7 @@ class VoiceEngine:
     def say_this(self, phrase):
         # print sys.platform
         if sys.platform == "darwin":
-            print "Mac Speech Synthesizer"
+            # print "Mac Speech Synthesizer"
             os.system("say " + phrase)
         else:
             self.engine.say(phrase)
@@ -90,12 +90,28 @@ def choose_response(recipe_object, wit_input, kb_object):
         response = ingredients_found
 
     elif intent == 'get_temperature':
-        want_temperature = recipe_object.instructions
-        indices = [i for i, s in enumerate(want_temperature) if 'temperature' in s]
-        if indices:
-            response = want_temperature[indices[0]]
+        temp_response = ""
+        for step in recipe_object.instructions:
+            print "here " + step
+            if (("degrees" or "farenheit" or "celsius") in step) and (step not in temp_response):
+                if step not in temp_response:
+                    print "not in response"
+                if temp_response == "":
+                    temp_response = sanitize_step(step)
+                else:
+                    temp_response = temp_response + " and " + sanitize_step(step)
+
+        if temp_response is "":
+            response = "Error"
         else:
-            response = "could not find temperature"
+            print temp_response
+            response = temp_response
+
+        # indices = [i for i, s in enumerate(want_temperature) if 'temperature' in s]
+        # if indices:
+        #     response = want_temperature[indices[0]]
+        # else:
+        #     response = "could not find temperature"
 
     elif intent == 'get_time':
         want_time = recipe_object.instructions
@@ -114,22 +130,27 @@ def choose_response(recipe_object, wit_input, kb_object):
             print list_tool[indices[0]]
         else:
             response = "could not find tools"
+
     elif intent=='ingredient_substitute':
         #TODO
         response = "error"
     elif intent=='navigate_back':
-        #TODO
-        response = "previous step"
+        if recipe_object.current_step is not 0:
+            recipe_object.previous_step()
+            response = "Previous Step is: " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
+        else:
+            response = "Already on first step. Step is: " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
+        # response = "previous step"
 
     elif intent == 'navigate_forward':
         recipe_object.next_step()
-        print recipe_object.instructions[recipe_object.current_step]
-        response = "Moving to next step. Next step is " + recipe_object.instructions[recipe_object.current_step]
+        response = "Moving to next step. Next step is " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
 
-    elif intent=='read_recipe':
+    elif intent == 'read_recipe':
         #TODO
         response = "error"
-    elif intent=='start_up':
+
+    elif intent == 'start_up':
         #TODO
         response = "error"
     elif intent=='technique_how_to':
@@ -152,6 +173,17 @@ def choose_response(recipe_object, wit_input, kb_object):
     return response
 
 
+def sanitize_step(step):
+    """
+    :param step: takes step string from instructions
+    :return: sanitized version for speech
+    """
+    new_step = step
+    bad_char_list = [";", "(", ")"]
+    for char in bad_char_list:
+        new_step = new_step.replace(char, " ")
+
+    return new_step
 
 def response_test():
     wit_json = {u'outcomes': [{u'entities': {u'food': [{u'suggested': True, u'type': u'value', u'value': u'salt'}, {u'type': u'value', u'value': u'cocoa'}]}, u'confidence': 0.977, u'intent': u'get_ingredient_amount', u'_text': u'how much vegetable oil do i need'}], u'msg_id': u'cd7fa98d-9407-483c-9d7d-746e319a6f0f', u'_text': u'how much vegetable oil do i need'}
