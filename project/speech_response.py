@@ -63,9 +63,8 @@ def choose_response(recipe_object, wit_input, kb_object):
         response = "stopping"
 
     elif intent == 'get_ingredient':
-        #TODO
-        response = "error"
-
+        wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
+        response = wanted_ingredient
     elif intent == 'get_ingredient_amount':
         if not wit_input[u'outcomes'][0][u'entities']:
             return response
@@ -107,8 +106,14 @@ def choose_response(recipe_object, wit_input, kb_object):
             response = "could not find time"
             
     elif intent=='how_to_use_tool':
-        #TODO
-        response = "error"
+        tool = wit_input[u'outcomes'][0][u'entities'][u'tool'][0][u'value']
+        list_tool = recipe_object.tools
+        indices = [i for i, s in enumerate(list_tool) if tool in s]
+        if indices:
+            response = list_tool[indices[0]]
+            print list_tool[indices[0]]
+        else:
+            response = "could not find tools"
     elif intent=='ingredient_substitute':
         #TODO
         response = "error"
