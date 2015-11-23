@@ -3,6 +3,8 @@ from parser_package import kb
 import json
 import parser
 import sys, os
+import urllib
+import re
 
 class VoiceEngine:
     """
@@ -158,7 +160,11 @@ def choose_response(recipe_object, wit_input, kb_object):
         response = "error"
     elif intent=='technique_how_to':
         #TODO
-        response = "error"
+        query_string = urllib.parse.urlencode({"search_query" : input()})
+        html_content = urllib.request.urlopen("http://www.youtube.com/results?" + query_string)
+        search_results = re.findall(r'href=\"\/watch\?v=(.{11})', html_content.read().decode())
+        print("http://www.youtube.com/watch?v=" + search_results[0])
+        response = "http://www.youtube.com/watch?v=" + search_results[0]
 
     elif intent == 'which_tool':
         choose_tool = wit_input[u'outcomes'][0][u'entities']
