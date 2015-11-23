@@ -84,7 +84,6 @@ def wit_call(speechQuery):
 
 
 def run_speech_rec():
-    print "here"
     background = False
     while not background:
         background = background_listen()

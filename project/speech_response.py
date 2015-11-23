@@ -2,6 +2,7 @@ import pyttsx
 from parser_package import kb
 import json
 import parser
+import sys, os
 
 class VoiceEngine:
     """
@@ -28,8 +29,13 @@ class VoiceEngine:
         return
 
     def say_this(self, phrase):
-        self.engine.say(phrase)
-        self.engine.runAndWait()
+        print sys.platform
+        if sys.platform == "darwin":
+            print "using mac speech synth"
+            os.system("say " + phrase)
+        else:
+            self.engine.say(phrase)
+            self.engine.runAndWait()
         return
 
 

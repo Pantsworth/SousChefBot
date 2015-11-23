@@ -8,7 +8,7 @@ from parser_package import kb
 
 def demo_function(recipe_object):
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
-    print recipe
+    # print recipe
     result = ""
     while ("stop" not in result):
         result = speechtest2.run_speech_rec()
@@ -20,4 +20,11 @@ def demo_function(recipe_object):
     print "DEMO IS CONCLUDED"
     return
 
+# def speechDemo(phrase):
+#     test_engine = speech_response.VoiceEngine()
+#     test_engine.say_this(phrase)
+#     return
+
 demo_function(None)
+# speechDemo("yes master?")
+
