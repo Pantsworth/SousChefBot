@@ -29,9 +29,9 @@ class VoiceEngine:
         return
 
     def say_this(self, phrase):
-        print sys.platform
+        # print sys.platform
         if sys.platform == "darwin":
-            print "using mac speech synth"
+            print "Mac Speech Synthesizer"
             os.system("say " + phrase)
         else:
             self.engine.say(phrase)
@@ -80,11 +80,11 @@ def choose_response(recipe_object, wit_input, kb_object):
             return False
 
         print "Wanted Ingredient is: ", wanted_ingredient
-        ingredients_found = None
+        ingredients_found = ""
         for ingredient in recipe_object.ingredients:
             if wanted_ingredient in ingredient:
                 print "Found ingredient: ", wanted_ingredient
-                if ingredients_found:
+                if ingredient not in ingredients_found:
                     ingredients_found = ingredient + " AND " + ingredients_found
                 else:
                     ingredients_found = ingredient

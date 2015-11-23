@@ -13,9 +13,13 @@ def demo_function(recipe_object):
     while ("stop" not in result):
         result = speechtest2.run_speech_rec()
         response = speech_response.choose_response(recipe, result, None)
+
         if response:
-            test_engine = speech_response.VoiceEngine()
-            test_engine.say_this(response)
+            if response == "stopping":
+                break
+            else:
+                speech_engine = speech_response.VoiceEngine()
+                speech_engine.say_this(response)
 
     print "DEMO IS CONCLUDED"
     return

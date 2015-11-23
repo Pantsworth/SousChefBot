@@ -3,17 +3,49 @@ __author__ = 'DoctorWatson'
 # NOTE: this example requires PyAudio because it uses the Microphone class
 
 import speech_recognition as sr
+import speech_rec_testing as srt
 import re
 import speech_response
 import urllib2
 import json
-import sys
+import time, sys
+
+import sys, os, pyaudio
+
+
+# from pocketsphinx import *
+#
+#
+#
+# def sphinx_rec():
+#     modeldir = "/usr/local/share/pocketsphinx/model"
+#     # Create a decoder with certain model
+#     config = Decoder.default_config()
+#     config.set_string('-hmm', os.path.join(modeldir, 'hmm/en_US/hub4wsj_sc_8k'))
+#     config.set_string('-dict', os.path.join(modeldir, 'lm/en_US/cmu07a.dic'))
+#     config.set_string('-keyphrase', 'oh mighty computer')
+#     config.set_float('-kws_threshold', 1e-40)
+#
+#     decoder = Decoder(config)
+#     decoder.start_utt('spotting')
+#
+#     stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=1024)
+#     stream.start_stream()
+#
+#     while True:
+#         buf = stream.read(1024)
+#         decoder.process_raw(buf, False, False)
+#         if decoder.hyp() != None and decoder.hyp().hypstr == 'computer':
+#             print "Detected keyword, restarting search"
+#             decoder.end_utt()
+#             decoder.start_utt('spotting')
+
 
 # obtain audio from the microphone
 def start_speech_rec():
     """
     Once the bot hears our magic word, we can call this to listen for a particular command.
-    :return: google_response is what google thought we said. wit_ai_response is what wit.ai thought.
+    :return: what wit.ai thought we said
     """
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -86,7 +118,7 @@ def wit_call(speechQuery):
 def run_speech_rec():
     background = False
     while not background:
-        background = background_listen()
+        background = new_background_listen()
         print "Magic Word Status: ", background
         if background:
             break
@@ -98,5 +130,75 @@ def run_speech_rec():
     #     test_engine = speech_response.VoiceEngine()
     #     test_engine.say_this(result['_text'])
     return result
+
+
+
+def new_speech_recording():
+    r = srt.Recognizer()
+    m = srt.Microphone()
+    mac = False
+    if sys.platform == "darwin":
+        mac = True
+
+    while True:
+        print("Say something!")
+        if mac:
+            os.system("say Say Something")
+        time.sleep(0.5)
+        with m as source:
+            audio = r.listen(source)
+        print("Got it! Now to recognize it...")
+        if mac:
+            os.system("say -v victoria Got it! Now to recognize it")
+        time.sleep(0.75)
+        try:
+            text = r.recognize(audio)
+            print("You said " + text)
+            if mac:
+                os.system("say  -v vicki "+ text)
+            time.sleep(1)
+            if text == 'exit':
+                print "I am gonna EXIT bye bye"
+                if mac:
+                    os.system("say I am gonna exit Bye Bye  ")
+                time.sleep(0.5)
+                exit()
+
+        except LookupError:
+            print("Oops! Didn't catch that")
+            if mac:
+                os.system("say -v Alex Oops Didnt catch that")
+            time.sleep(1)
+
+
+def new_background_listen():
+    """
+    Listens for our magic word(s) and returns True if it hears them within a certain amount of time.
+    :return: Boolean
+    """
+    r = srt.Recognizer()
+    with srt.Microphone() as source:
+        print("*** Background Listening ***")
+        audio = r.listen(source)
+
+    text = ""
+    magic_word_status = False
+    try:
+        text = r.recognize(audio)
+        print("You said " + text)
+
+    except LookupError:
+        # print("Oops! Didn't catch that")
+        time.sleep(1)
+
+    if "computer" in text:
+        magic_word_status = True
+        speech_engine = speech_response.VoiceEngine()
+        speech_engine.say_this("Yes?")
+        # time.sleep(1)
+    else:
+        magic_word_status = False
+
+    return magic_word_status
 
 # run_speech_rec()
