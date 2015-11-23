@@ -13,6 +13,7 @@ def demo_function(recipe_object):
 
     result = ""
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+    # recipe = parser.parse_recipe("http://allrecipes.com/recipe/235653/crispy-chicken-nuggets/")
     recipe.print_recipe()
 
     speech_engine = speech_response.VoiceEngine()

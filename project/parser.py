@@ -62,6 +62,9 @@ def parse_recipe(url):
     new_recipe.tools = find_cooking_tools(new_recipe.instructions, k_base)
     new_recipe.methods = find_cooking_methods(new_recipe.instructions, k_base)
 
+    for i in range(len(new_recipe.ingredients)):
+        new_recipe.ingredients[i] = new_recipe.ingredients[i].encode(encoding='utf-8', errors='strict')
+
     for i in range(len(new_recipe.instructions)):
         new_recipe.instructions[i] = util.sanitize_step(new_recipe.instructions[i])
 
