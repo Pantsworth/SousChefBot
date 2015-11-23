@@ -12,10 +12,10 @@ class Recipe:
         self.methods = []
         self.tools = []
         self.current_step = 0
-        if ingredients:
-            self.add_ingredients(ingredients)
-        if instructions:
-            self.add_steps(instructions)
+        # if ingredients:
+        #     self.add_ingredients(ingredients)
+        # if instructions:
+        #     self.add_steps(instructions)
 
     def add_ingredients(self, ingredients_list):
         self.ingredients.extend(ingredients_list)

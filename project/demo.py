@@ -4,19 +4,29 @@ import speech_response
 import speechtest2
 import util
 from parser_package import kb
-
+import util
 
 def demo_function(recipe_object):
     result = ""
+    recipe = None
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
     recipe.print_recipe()
+
+    speech_engine = speech_response.VoiceEngine()
+
+    speech_engine.say_this("This is a recipe for: " + recipe.title)
+    speech_engine.say_this("Here is a list of the ingredients")
+
+    for ing in recipe.ingredients:
+        speech_engine.say_this(ing)
+
+    speech_engine.say_this("The first step is: " + util.sanitize_step(recipe.instructions[recipe.current_step]))
 
     while ("stop" not in result):
         result = speechtest2.run_speech_rec()
         response = speech_response.choose_response(recipe, result, None)
 
         if response:
-            speech_engine = speech_response.VoiceEngine()
             speech_engine.say_this(response)
             if response == "stopping":
                 break

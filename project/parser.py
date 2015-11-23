@@ -9,6 +9,7 @@ import platform
 import json
 from parser_package import kb
 import recipe
+import util
 
 
 def parse_recipe(url):
@@ -49,6 +50,7 @@ def parse_recipe(url):
     # print recipe_json
     parsed_json = json.loads(recipe_json)
 
+
     # clean up the ingredients formatting
     if parsed_json['ingredients'][0] is not None:
         parsed_json['ingredients'] = parsed_json['ingredients'][0]['list']
@@ -59,6 +61,12 @@ def parse_recipe(url):
     new_recipe = recipe.Recipe(parsed_json['title'], parsed_json['yield'], parsed_json['ingredients'], parsed_json['instructions'])
     new_recipe.tools = find_cooking_tools(new_recipe.instructions, k_base)
     new_recipe.methods = find_cooking_methods(new_recipe.instructions, k_base)
+
+    for i in range(len(new_recipe.instructions)):
+        new_recipe.instructions[i] = util.sanitize_step(new_recipe.instructions[i])
+
+    for i in range(len(new_recipe.ingredients)):
+        new_recipe.ingredients[i] = util.sanitize_step(new_recipe.ingredients[i])
     # find_temps(new_recipe.instructions, k_base)
     # print new_recipe.title, new_recipe.ingredients, new_recipe.instructions
     # print parsed_json['title']
