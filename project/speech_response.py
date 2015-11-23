@@ -134,21 +134,24 @@ def choose_response(recipe_object, wit_input, kb_object):
     elif intent=='ingredient_substitute':
         #TODO
         response = "error"
+    
     elif intent=='navigate_back':
         if recipe_object.current_step is not 0:
             recipe_object.previous_step()
             response = "Previous Step is: " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
         else:
             response = "Already on first step. Step is: " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
-        # response = "previous step"
 
     elif intent == 'navigate_forward':
         recipe_object.next_step()
         response = "Moving to next step. Next step is " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
 
     elif intent == 'read_recipe':
-        #TODO
-        response = "error"
+        if recipe_object.current_step <= len(recipe_object.instructions) - 1:
+          response = "Current step is: " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
+        else:
+            response = "We've read through all the instructions is there a specific step you would like?"
+
 
     elif intent == 'start_up':
         #TODO
