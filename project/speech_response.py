@@ -157,7 +157,7 @@ def choose_response(recipe_object, wit_input, kb_object):
         recipe_object.next_step()
         response = "Moving to next step. Next step is " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
 
-    elif intent == 'read_recipe':
+    elif intent == 'current_step':
         if recipe_object.current_step <= len(recipe_object.instructions) - 1:
           response = "Current step is: " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
         else:
