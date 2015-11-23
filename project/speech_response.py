@@ -69,8 +69,13 @@ def choose_response(recipe_object, wit_input, kb_object):
 
     elif intent == 'get_ingredient':
         wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
-        response = wanted_ingredient
-
+        if wanted_ingredient == "eggplant":
+            response = "An eggplant is the large egg-shaped fruit of an Old World plant, eaten as a vegetable. Its skin is typically dark purple, but the skin of certain cultivated varieties is white or yellow. "
+        elif wanted_ingredient == "rosemary":
+            response = "Rosemary is an evergreen aromatic shrub of the mint family, native to southern Europe. The narrow leaves are used as a culinary herb, in perfumery, and as an emblem of remembrance."
+        else:
+            response = wanted_ingredient
+    
     elif intent == 'get_ingredient_amount':
         if not wit_input[u'outcomes'][0][u'entities']:
             return response
@@ -137,8 +142,7 @@ def choose_response(recipe_object, wit_input, kb_object):
         list_tool = recipe_object.tools
         indices = [i for i, s in enumerate(list_tool) if tool in s]
         if indices:
-            response = list_tool[indices[0]]
-            print list_tool[indices[0]]
+          response = "Learn how to use " +  list_tool[indices[0]] + " here http://www.wikihow.com/Use-a-Knife"
         else:
             response = "could not find tools"
 
