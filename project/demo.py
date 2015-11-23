@@ -1,8 +1,8 @@
 __author__ = 'DoctorWatson'
-from project import parser
-from project import speech_response
-from project import speechtest2
-from project import util
+import parser
+import speech_response
+import speechtest2
+import util
 from parser_package import kb
 
 
@@ -13,9 +13,9 @@ def demo_function(recipe_object):
     while ("stop" not in result):
         result = speechtest2.run_speech_rec()
         response = speech_response.choose_response(recipe, result, None)
-        if response:
-            test_engine = speech_response.VoiceEngine()
-            test_engine.say_this(response)
+#        if response:
+#           test_engine = speech_response.VoiceEngine()
+#            test_engine.say_this(response)
 
     print "DEMO IS CONCLUDED"
     return
@@ -24,7 +24,9 @@ def demo_function(recipe_object):
 #     test_engine = speech_response.VoiceEngine()
 #     test_engine.say_this(phrase)
 #     return
-
-demo_function(None)
 # speechDemo("yes master?")
+def main():
+  demo_function(None)
 
+if __name__ == '__main__':
+  main()
