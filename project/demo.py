@@ -7,20 +7,28 @@ from parser_package import kb
 import util
 
 def demo_function(recipe_object):
+
+    # preamble for human-friendly opening
+    preamble = False
+
     result = ""
-    recipe = None
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
     recipe.print_recipe()
 
     speech_engine = speech_response.VoiceEngine()
 
     speech_engine.say_this("This is a recipe for: " + recipe.title)
-    speech_engine.say_this("Here is a list of the ingredients")
 
-    for ing in recipe.ingredients:
-        speech_engine.say_this(ing)
+    if preamble:
+        speech_engine.say_this("Here is a list of the ingredients")
 
-    speech_engine.say_this("The first step is: " + util.sanitize_step(recipe.instructions[recipe.current_step]))
+        for ing in recipe.ingredients:
+            speech_engine.say_this(ing)
+
+        speech_engine.say_this("The first step is: " + util.sanitize_step(recipe.instructions[recipe.current_step]))
+
+        speech_engine.say_this("Feel free to ask me any questions. Just say computer, computer to get me to wake up. After I say yes, ask me your question.")
+        speech_engine.say_this("I'm listening now.")
 
     while ("stop" not in result):
         result = speechtest2.run_speech_rec()

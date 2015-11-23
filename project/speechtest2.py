@@ -109,7 +109,12 @@ def wit_call(speechQuery):
     url = "https://api.wit.ai/message?v=20151102&q=" + s
     auth_token = "4PRXFOGEMZFETD7BCQ56YDMC5MV4FXVZ"
     req = urllib2.Request(url, None, {"Authorization": "Bearer %s" %auth_token})
-    response = urllib2.urlopen(req)
+    try:
+        response = urllib2.urlopen(req)
+    except urllib2.HTTPError:
+        response = []
+        return "Response Failed"
+
     html = response.read()
     json_obj = json.loads(html)
     return json_obj
@@ -125,8 +130,13 @@ def run_speech_rec():
     command = start_speech_rec()
 
     result = wit_call(command)
-    print result
-    print result['_text']
+
+    if result == "Response Failed":
+        return result
+
+    # print result
+    # print result['_text']
+
     # if result:
     #     test_engine = speech_response.VoiceEngine()
     #     test_engine.say_this(result['_text'])

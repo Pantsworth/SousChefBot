@@ -54,6 +54,11 @@ def choose_response(recipe_object, wit_input, kb_object):
     :return: string that is an appropriate speech response
     """
     #wit_input = {u'outcomes': [{u'entities': {}, u'confidence': 0.742, u'intent': u'get_time', u'_text': u'Wit.ai thinks you said: yeah'}], u'msg_id': u'5262a8bf-a25a-4183-bc42-a4cd1807e20e', u'_text': u'Wit.ai thinks you said: yeah'}
+
+    if wit_input == "Response Failed":
+        response = wit_input
+        return response
+
     intent = wit_input[u'outcomes'][0][u'intent']
     print wit_input['outcomes']
     wanted_ingredient = None
@@ -65,6 +70,7 @@ def choose_response(recipe_object, wit_input, kb_object):
     elif intent == 'get_ingredient':
         wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
         response = wanted_ingredient
+
     elif intent == 'get_ingredient_amount':
         if not wit_input[u'outcomes'][0][u'entities']:
             return response
@@ -83,10 +89,11 @@ def choose_response(recipe_object, wit_input, kb_object):
         for ingredient in recipe_object.ingredients:
             if wanted_ingredient in ingredient:
                 print "Found ingredient: ", wanted_ingredient
-                if ingredient not in ingredients_found:
+                if (ingredient not in ingredients_found) and (ingredients_found is not ""):
                     ingredients_found = ingredient + " AND " + ingredients_found
                 else:
                     ingredients_found = ingredient
+
         response = ingredients_found
 
     elif intent == 'get_temperature':
@@ -97,9 +104,9 @@ def choose_response(recipe_object, wit_input, kb_object):
                 if step not in temp_response:
                     print "not in response"
                 if temp_response == "":
-                    temp_response = sanitize_step(step)
+                    temp_response = step
                 else:
-                    temp_response = temp_response + " and " + sanitize_step(step)
+                    temp_response = temp_response + " and " + step
 
         if temp_response is "":
             response = "Error"
@@ -121,7 +128,7 @@ def choose_response(recipe_object, wit_input, kb_object):
         else:
             response = "could not find time"
             
-    elif intent=='how_to_use_tool':
+    elif intent == 'how_to_use_tool':
         tool = wit_input[u'outcomes'][0][u'entities'][u'tool'][0][u'value']
         list_tool = recipe_object.tools
         indices = [i for i, s in enumerate(list_tool) if tool in s]
