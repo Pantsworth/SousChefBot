@@ -123,6 +123,7 @@ def run_speech_rec():
         if background:
             break
     command = start_speech_rec()
+
     result = wit_call(command)
     print result
     print result['_text']
