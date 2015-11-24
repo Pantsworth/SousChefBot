@@ -49,6 +49,6 @@ def denom(x):
         '5': " fifth",
         '6': " sixth",
         '7': " seventh"
-    }.get(x, False)
+    }.get(x, " ")
 
 handle_fractions("1/2 cup tomatoes, 1/4 tsp")
