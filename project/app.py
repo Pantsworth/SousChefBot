@@ -58,12 +58,23 @@ def background_thread():
 def demo_function():
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
     result = ""
+    print "in the demo function"
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response',
+             {'data': "ew", 'count': session['receive_count']})
     while ("stop" not in result):
+        session['receive_count'] = session.get('receive_count', 0) + 1
+        emit('my response',
+             {'data': "ew", 'count': session['receive_count']})
         result = speechtest2.run_speech_rec()
         response = speech_response.choose_response(recipe, result, None)
-        if response:
-            test_engine = speech_response.VoiceEngine()
-            test_engine.say_this(response)
+
+
+
+
+# def main_function():
+#     socketio.run(app, debug=True)
+
 
 @app.route('/')
 def jsonreq():
@@ -89,6 +100,38 @@ def index():
     return render_template('recipe.html', html_title=recipe_title, html_yield=recipe_yield,
                            html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata="")
 
+#
+# def index2():
+#     result = ""
+#     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+#     # recipe = parser.parse_recipe("http://allrecipes.com/recipe/235653/crispy-chicken-nuggets/")
+#     recipe.print_recipe()
+#
+#     question_collector = []
+#     answer_collector = []
+#
+#     while ("stop" not in result):
+#
+#
+#         recipe_title = recipe.title
+#         recipe_yield = recipe.servings
+#         recipe_ingredients = recipe.ingredients
+#         recipe_instructions = recipe.instructions
+#         render_template('recipe.html', html_title=recipe_title, html_yield=recipe_yield,
+#                                    html_ingredients=question_collector, html_instructions=recipe_instructions, jsondata="")
+#
+#         result = speechtest2.run_speech_rec()
+#         response = speech_response.choose_response(recipe, result, None)
+#         question_collector.append(result)
+#         answer_collector.append(response)
+#
+#         if response:
+#             # speech_engine.say_this(response)
+#             if response == "stopping":
+#                 break
+#
+#     print "DEMO IS CONCLUDED"
+#     return
 
 @socketio.on('my event', namespace='/test')
 def test_message(message):

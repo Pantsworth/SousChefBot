@@ -63,13 +63,11 @@ def parse_recipe(url):
     new_recipe.methods = find_cooking_methods(new_recipe.instructions, k_base)
 
     for i in range(len(new_recipe.ingredients)):
-        new_recipe.ingredients[i] = util.handle_fractions(new_recipe.ingredients[i].encode(encoding='utf-8', errors='strict'))
+        new_recipe.ingredients[i] = util.sanitize_step(util.handle_fractions(new_recipe.ingredients[i].encode(encoding='utf-8', errors='strict')))
 
     for i in range(len(new_recipe.instructions)):
         new_recipe.instructions[i] = util.sanitize_step(new_recipe.instructions[i])
 
-    for i in range(len(new_recipe.ingredients)):
-        new_recipe.ingredients[i] = util.sanitize_step(new_recipe.ingredients[i])
     # find_temps(new_recipe.instructions, k_base)
     # print new_recipe.title, new_recipe.ingredients, new_recipe.instructions
     # print parsed_json['title']

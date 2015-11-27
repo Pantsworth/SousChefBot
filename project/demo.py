@@ -9,7 +9,7 @@ import util
 def demo_function(recipe_object):
 
     # preamble for human-friendly opening
-    preamble = True
+    preamble = False
 
     result = ""
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
@@ -17,6 +17,7 @@ def demo_function(recipe_object):
     recipe.print_recipe()
 
     # ********** PREAMBLE ********* #
+
     speech_engine = speech_response.VoiceEngine()
     speech_engine.say_this("This is a recipe for: " + recipe.title)
 
@@ -37,11 +38,13 @@ def demo_function(recipe_object):
     answer_collector = []
 
     while ("stop" not in result):
+
         result = speechtest2.run_speech_rec()
         response = speech_response.choose_response(recipe, result, None)
 
         question_collector.append(result)
         answer_collector.append(response)
+
         if response:
             speech_engine.say_this(response)
             if response == "stopping":
@@ -50,13 +53,6 @@ def demo_function(recipe_object):
     print "DEMO IS CONCLUDED"
     return
 
-# def speechDemo(phrase):
-#     test_engine = speech_response.VoiceEngine()
-#     test_engine.say_this(phrase)
-#     return
-
-# demo_function(None)
-# speechDemo("yes master?")
 def main():
   demo_function(None)
   return

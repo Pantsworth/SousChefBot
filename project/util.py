@@ -51,4 +51,4 @@ def denom(x):
         '7': " seventh"
     }.get(x, " ")
 
-handle_fractions("1/2 cup tomatoes, 1/4 tsp")
+

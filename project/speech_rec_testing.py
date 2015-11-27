@@ -102,8 +102,8 @@ class Recognizer(AudioSource):
         self.language = language
  
         self.energy_threshold = 100 # minimum audio energy to consider for recording
-        self.pause_threshold = 0.8 # seconds of quiet time before a phrase is considered complete
-        self.quiet_duration = 0.5 # amount of quiet time to keep on both sides of the recording
+        self.pause_threshold = 0.3 # seconds of quiet time before a phrase is considered complete
+        self.quiet_duration = 0.2 # amount of quiet time to keep on both sides of the recording
  
     def samples_to_flac(self, source, frame_data):
         import platform, os
