@@ -21,7 +21,7 @@
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
             // event handler for server sent data
-            // the data is displayed in the "Received" section of the page
+            // the data is displayed in the "id=log" section of the page
             socket.on('my response', function(msg) {
             $('#log').append('<br>' + msg.data);
             });
@@ -76,8 +76,7 @@
     
         <p class="green-text text-darken-2">Let's get cooking! Gather your ingredients</p>
         <p class="green-text text-darken-2">Have any questions?</p>      
-
-        <p id="log"></p>
+        <h5 id="log"></h5>
       </div>
     </div>
   </div>

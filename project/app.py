@@ -56,8 +56,6 @@ def background_thread():
 
 def demo_function():
     print "in the demo function"
-    socketio_app.emit('my response',
-             {'data': "ew", 'count': 1})
     # with app.test_request_context('/recipe', method='POST', namespace = "/test"):
     # print "app context is: " + current_app.name
     url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
@@ -87,14 +85,14 @@ def demo_function():
           socketio_app.emit('my response',
               {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
         else:
-            query = result[u'outcomes'][0][u'_text']
-            response = speech_response.choose_response(recipe, result, None)
-            speech_engine.say_this(response)
-            print response
-            socketio_app.emit('my response',
-                {'data': "You: " + query, 'count':4}, namespace='/test')
-            socketio_app.emit('my response',
-                {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
+          query = result[u'outcomes'][0][u'_text']
+          response = speech_response.choose_response(recipe, result, None)
+          speech_engine.say_this(response)
+          print response
+          socketio_app.emit('my response',
+              {'data': "You: " + query, 'count':4}, namespace='/test')
+          socketio_app.emit('my response',
+              {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
         # result = "stop"
         # response = "stopping"
 
@@ -137,66 +135,6 @@ def index():
 
     return render_template('recipe.html', html_title=recipe_title, html_yield=recipe_yield,
                            html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata="")
-
-
-@socketio_app.on('my event', namespace='/test')
-def test_message(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': message['data'], 'count': session['receive_count']})
-
-
-@socketio_app.on('speech_rec', namespace='/test')
-def speech_rec_start(message):
-    print "Starting Speech Recognition"
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': "Starting Speech Recognition", 'count': session['receive_count']})
-    demo_function()
-
-
-@socketio_app.on('my broadcast event', namespace='/test')
-def test_broadcast_message(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': message['data'], 'count': session['receive_count']},
-         broadcast=True)
-
-
-@socketio_app.on('join', namespace='/test')
-def join(message):
-    join_room(message['room'])
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': 'In rooms: ' + ', '.join(rooms()),
-          'count': session['receive_count']})
-
-
-@socketio_app.on('leave', namespace='/test')
-def leave(message):
-    leave_room(message['room'])
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': 'In rooms: ' + ', '.join(rooms()),
-          'count': session['receive_count']})
-
-
-@socketio_app.on('close room', namespace='/test')
-def close(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response', {'data': 'Room ' + message['room'] + ' is closing.',
-                         'count': session['receive_count']},
-         room=message['room'])
-    close_room(message['room'])
-
-
-@socketio_app.on('my room event', namespace='/test')
-def send_room_message(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': message['data'], 'count': session['receive_count']},
-         room=message['room'])
-
 
 @socketio_app.on('disconnect request', namespace='/test')
 def disconnect_request():
