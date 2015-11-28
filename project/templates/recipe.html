@@ -26,26 +26,6 @@
             $('#log').append('<br>' + msg.data);
             });
 
-            /* event handler for new connections
-            socket.on('connect', function() {
-                socket.emit('my event', {data: 'I\'m connected!'});
-            });
-
-            // handlers for the different forms in the page
-            // these send data to the server in a variety of ways
-            $('form#emit').submit(function(event) {
-                socket.emit('my event', {data: $('#emit_data').val()});
-                return false;
-            });
-            $('form#speech_rec').submit(function(event) {
-                socket.emit('speech_rec', {data: $('#broadcast_data').val()});
-                return false;
-            });
-            $('form#disconnect').submit(function(event) {
-                socket.emit('disconnect request');
-                return false;
-                });
-                */
         });
     </script>
 </head>
@@ -97,7 +77,7 @@
         <p class="green-text text-darken-2">Let's get cooking! Gather your ingredients</p>
         <p class="green-text text-darken-2">Have any questions?</p>      
 
-        <h4="log"></h4>
+        <p id="log"></p>
       </div>
     </div>
   </div>

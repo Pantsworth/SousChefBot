@@ -81,16 +81,20 @@ def demo_function():
  #            {'data': "starting speech loop", 'count':1}, namespace='/test')
         result = speechtest2.run_speech_rec()
         if result == "Response Failed":
-            query = "I'm sorry, I didn't get that. Can you repeat your command?"
+          response = "I'm sorry, I didn't get that. Can you repeat your command?" 
+          speech_engine.say_this(response)
+          print response
+          socketio_app.emit('my response',
+              {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
         else:
             query = result[u'outcomes'][0][u'_text']
-        response = speech_response.choose_response(recipe, result, None)
-        speech_engine.say_this(response)
-        print response
-        socketio_app.emit('my response',
-            {'data': "You: " + query, 'count':4}, namespace='/test')
-        socketio_app.emit('my response',
-            {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
+            response = speech_response.choose_response(recipe, result, None)
+            speech_engine.say_this(response)
+            print response
+            socketio_app.emit('my response',
+                {'data': "You: " + query, 'count':4}, namespace='/test')
+            socketio_app.emit('my response',
+                {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
         # result = "stop"
         # response = "stopping"
 
