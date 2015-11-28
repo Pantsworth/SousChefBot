@@ -3,7 +3,8 @@ __author__ = 'DoctorWatson'
 
 import pyaudio
 import wave
-from project import util
+#this imports everything in project aka util
+from . import *
 
 def play_ding():
     CHUNK = 4
