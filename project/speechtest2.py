@@ -11,7 +11,7 @@ import os
 import speech_recognition as sr
 
 import speech_rec_testing as srt
-from project.audio_ding import play_audio
+from audio_ding import play_audio
 
 # # deprecated version of background listening
 # def background_listen():
