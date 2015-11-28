@@ -91,6 +91,13 @@ def demo_function():
 @app.route('/')
 def jsonreq():
     print "index"
+
+    return render_template('form.html')
+
+
+@app.route('/recipe')
+def index():
+
     global socket_thread
     global speech_thread
     global url
@@ -107,11 +114,6 @@ def jsonreq():
         speech_thread.start()
         print "started speech thread"
 
-    return render_template('form.html')
-
-
-@app.route('/recipe')
-def index():
 
     print "rendering the page?"
     url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
