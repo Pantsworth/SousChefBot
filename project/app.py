@@ -45,12 +45,13 @@ socket_thread = None
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
-    while True:
+    """while True:
         time.sleep(5)
         count += 1
         socketio_app.emit('my response',
                       {'data': 'Generated. Sleeping for 5.', 'count': count},
                       namespace='/test')
+    """
 
 def demo_function():
     print "in the demo function"
@@ -74,14 +75,20 @@ def demo_function():
 
     while ("stop" not in response):
         print "starting speech loop"
-        socketio_app.emit('my response',
-             {'data': "starting speech loop", 'count':1}, namespace='/test')
+ #       socketio_app.emit('my response',
+ #            {'data': "starting speech loop", 'count':1}, namespace='/test')
         result = speechtest2.run_speech_rec()
+        if result == "Response Failed":
+            query = "I'm sorry, I didn't get that. Can you repeat your command?"
+        else:
+            query = result[u'outcomes'][0][u'_text']
         response = speech_response.choose_response(recipe, result, None)
         speech_engine.say_this(response)
         print response
         socketio_app.emit('my response',
-             {'data': response + "", 'count':4}, namespace='/test')
+            {'data': "You: " + query, 'count':4}, namespace='/test')
+        socketio_app.emit('my response',
+            {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
         # result = "stop"
         # response = "stopping"
 
@@ -189,7 +196,7 @@ def disconnect_request():
 
 @socketio_app.on('connect', namespace='/test')
 def test_connect():
-    emit('my response', {'data': 'Connected', 'count': 0})
+    emit('my response', {'data': 'Say "Computer" when you want me to listen! ', 'count': 0})
 
 
 @socketio_app.on('disconnect', namespace='/test')
