@@ -79,7 +79,7 @@ def demo_function():
  #            {'data': "starting speech loop", 'count':1}, namespace='/test')
         result = speechtest2.run_speech_rec()
         if result == "Response Failed":
-          response = "I'm sorry, I didn't get that. Can you repeat your command?" 
+          response = "I'm sorry, I did not get that. Can you repeat your command?" 
           speech_engine.say_this(response)
           print response
           socketio_app.emit('my response',
