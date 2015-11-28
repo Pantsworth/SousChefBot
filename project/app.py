@@ -60,6 +60,7 @@ def demo_function():
     # print "app context is: " + current_app.name
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
     result = ""
+    response = ""
     # count = 0
     # while True:
     #     time.sleep(3)
@@ -68,10 +69,11 @@ def demo_function():
     #                   {'data': 'Generated. Sleeping for 3.', 'count': count},
     #                   namespace='/test')
     #
-    while ("stop" not in result):
+
+    while ("stop" not in response):
         print "starting speech loop"
         socketio_app.emit('my response',
-             {'data': "ew", 'count':1}, namespace='/test')
+             {'data': "starting speech loop", 'count':1}, namespace='/test')
         result = speechtest2.run_speech_rec()
         response = speech_response.choose_response(recipe, result, None)
         print response
