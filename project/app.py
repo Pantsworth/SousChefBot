@@ -59,6 +59,8 @@ def demo_function():
     # with app.test_request_context('/recipe', method='POST', namespace = "/test"):
     # print "app context is: " + current_app.name
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+    speech_engine = speech_response.VoiceEngine()
+    speech_engine.say_this("This is a recipe for: " + recipe.title)
     result = ""
     response = ""
     # count = 0
@@ -76,6 +78,7 @@ def demo_function():
              {'data': "starting speech loop", 'count':1}, namespace='/test')
         result = speechtest2.run_speech_rec()
         response = speech_response.choose_response(recipe, result, None)
+        speech_engine.say_this(response)
         print response
         socketio_app.emit('my response',
              {'data': response + "", 'count':4}, namespace='/test')

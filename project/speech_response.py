@@ -1,4 +1,3 @@
-import pyttsx
 from parser_package import kb
 import json
 import parser
@@ -9,9 +8,15 @@ class VoiceEngine:
     Text to speech with pyttsx. Initialized as an object with associated functions.
     """
     def __init__(self):
-        self.engine = pyttsx.init()
-        self.engine.setProperty('rate', 190)
-        # print self.engine.getProperty("voice")
+        try:
+            import pyttsx
+            self.engine = pyttsx.init()
+            self.engine.setProperty('rate', 190)
+
+        except ImportError:
+            self.engine = None
+            print "Pyttsx import failed - Using Mac System Voice."
+            # print self.engine.getProperty("voice")
 
     def test(self):
         voices = self.engine.getProperty('voices')
