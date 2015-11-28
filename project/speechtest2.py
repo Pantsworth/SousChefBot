@@ -14,35 +14,35 @@ import speech_rec_testing as srt
 from audio_ding import play_audio
 
 # # deprecated version of background listening
-# def background_listen():
-#     """
-#     Listens for our magic word(s) and returns True if it hears them within a certain amount of time.
-#     :return: Boolean
-#     """
-#     r = sr.Recognizer()
-#     with sr.Microphone() as source:
-#         print("*** Background Listening ***")
-#         audio = r.listen(source)
-#
-#     magic_word_status = False
-#     # wit_ai_response = ""
-#
-#     # recognize speech using Wit.ai
-#     WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
-#
-#     try:
-#         print("Wit.ai thinks you said " + r.recognize_wit(audio, key=WIT_AI_KEY))
-#     except sr.UnknownValueError:
-#         print("Wit.ai could not understand audio")
-#     except sr.RequestError as e:
-#         print("Could not request results from Wit.ai service; {0}".format(e))
-#
-#     if re.compile(r'\bcomputer\b', flags=re.IGNORECASE).search(r.recognize_wit(audio, key=WIT_AI_KEY)):
-#         magic_word_status = True
-#     else:
-#         magic_word_status = False
-#
-#     return magic_word_status
+def background_listen():
+    """
+    Listens for our magic word(s) and returns True if it hears them within a certain amount of time.
+    :return: Boolean
+    """
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("*** Background Listening ***")
+        audio = r.listen(source)
+
+    magic_word_status = False
+    # wit_ai_response = ""
+
+    # recognize speech using Wit.ai
+    WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
+
+    try:
+        print("Wit.ai thinks you said " + r.recognize_wit(audio, key=WIT_AI_KEY))
+    except sr.UnknownValueError:
+        print("Wit.ai could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Wit.ai service; {0}".format(e))
+
+    if re.compile(r'\bcomputer\b', flags=re.IGNORECASE).search(r.recognize_wit(audio, key=WIT_AI_KEY)):
+        magic_word_status = True
+    else:
+        magic_word_status = False
+
+    return magic_word_status
 
 
 # def new_speech_recording():
@@ -171,7 +171,7 @@ def new_background_listen():
 def run_speech_rec():
     background = False
     while not background:
-        background = new_background_listen()
+        background = background_listen()
         print "Magic Word Status: ", background
         if background:
             break

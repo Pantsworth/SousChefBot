@@ -24,68 +24,82 @@ if async_mode is None:
 if async_mode == 'eventlet':
     import eventlet
     eventlet.monkey_patch()
-# elif async_mode == 'gevent':
-#     from gevent import monkey
-#     monkey.patch_all()
+
 
 import parser
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, current_app
 import time
 from threading import Thread
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 import speech_response, speechtest2
-import threading
-import json
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "q"
-socketio = SocketIO(app, async_mode=async_mode)
-thread = None
+socketio_app = SocketIO(app, async_mode=async_mode)
+speech_thread = None
+socket_thread = None
+
 
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
-        time.sleep(10)
+        time.sleep(5)
         count += 1
-        socketio.emit('my response',
-                      {'data': 'Server generated event', 'count': count},
+        socketio_app.emit('my response',
+                      {'data': 'Generated. Sleeping for 5.', 'count': count},
                       namespace='/test')
 
-    #text input
-
 def demo_function():
+    print "in the demo function"
+    socketio_app.emit('my response',
+             {'data': "ew", 'count': 1})
+    # with app.test_request_context('/recipe', method='POST', namespace = "/test"):
+    # print "app context is: " + current_app.name
     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
     result = ""
-    print "in the demo function"
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-             {'data': "ew", 'count': session['receive_count']})
+    # count = 0
+    # while True:
+    #     time.sleep(3)
+    #     count += 1
+    #     socketio_app.emit('my response',
+    #                   {'data': 'Generated. Sleeping for 3.', 'count': count},
+    #                   namespace='/test')
+    #
     while ("stop" not in result):
-        session['receive_count'] = session.get('receive_count', 0) + 1
-        emit('my response',
-             {'data': "ew", 'count': session['receive_count']})
+        print "starting speech loop"
+        socketio_app.emit('my response',
+             {'data': "ew", 'count':1}, namespace='/test')
         result = speechtest2.run_speech_rec()
         response = speech_response.choose_response(recipe, result, None)
-
-
-
-
-# def main_function():
-#     socketio.run(app, debug=True)
+        print response
+        socketio_app.emit('my response',
+             {'data': response + "", 'count':4}, namespace='/test')
+        # result = "stop"
+        # response = "stopping"
 
 
 @app.route('/')
 def jsonreq():
-    global thread
+    global socket_thread
+    global speech_thread
     print "index"
-    if thread is None:
-        thread = Thread(target=background_thread)
-        thread.daemon = True
-        thread.start()
+    if socket_thread is None:
+        socket_thread = Thread(target=background_thread)
+        socket_thread.daemon = True
+        socket_thread.start()
+        print "started bkg thread"
+
+    if speech_thread is None:
+        speech_thread = Thread(target=demo_function)
+        speech_thread.daemon = False
+        speech_thread.start()
+        print "started speech thread"
 
     return render_template('form.html')
+
 
 @app.route('/recipe')
 def index():
@@ -100,58 +114,24 @@ def index():
     return render_template('recipe.html', html_title=recipe_title, html_yield=recipe_yield,
                            html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata="")
 
-#
-# def index2():
-#     result = ""
-#     recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
-#     # recipe = parser.parse_recipe("http://allrecipes.com/recipe/235653/crispy-chicken-nuggets/")
-#     recipe.print_recipe()
-#
-#     question_collector = []
-#     answer_collector = []
-#
-#     while ("stop" not in result):
-#
-#
-#         recipe_title = recipe.title
-#         recipe_yield = recipe.servings
-#         recipe_ingredients = recipe.ingredients
-#         recipe_instructions = recipe.instructions
-#         render_template('recipe.html', html_title=recipe_title, html_yield=recipe_yield,
-#                                    html_ingredients=question_collector, html_instructions=recipe_instructions, jsondata="")
-#
-#         result = speechtest2.run_speech_rec()
-#         response = speech_response.choose_response(recipe, result, None)
-#         question_collector.append(result)
-#         answer_collector.append(response)
-#
-#         if response:
-#             # speech_engine.say_this(response)
-#             if response == "stopping":
-#                 break
-#
-#     print "DEMO IS CONCLUDED"
-#     return
 
-@socketio.on('my event', namespace='/test')
+@socketio_app.on('my event', namespace='/test')
 def test_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
          {'data': message['data'], 'count': session['receive_count']})
 
 
-@socketio.on('speech_rec', namespace='/test')
+@socketio_app.on('speech_rec', namespace='/test')
 def speech_rec_start(message):
     print "Starting Speech Recognition"
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
          {'data': "Starting Speech Recognition", 'count': session['receive_count']})
-    speech_thread = Thread(target=demo_function())
-    print "welp"
-    speech_thread.start()
+    demo_function()
 
 
-@socketio.on('my broadcast event', namespace='/test')
+@socketio_app.on('my broadcast event', namespace='/test')
 def test_broadcast_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
@@ -159,7 +139,7 @@ def test_broadcast_message(message):
          broadcast=True)
 
 
-@socketio.on('join', namespace='/test')
+@socketio_app.on('join', namespace='/test')
 def join(message):
     join_room(message['room'])
     session['receive_count'] = session.get('receive_count', 0) + 1
@@ -168,7 +148,7 @@ def join(message):
           'count': session['receive_count']})
 
 
-@socketio.on('leave', namespace='/test')
+@socketio_app.on('leave', namespace='/test')
 def leave(message):
     leave_room(message['room'])
     session['receive_count'] = session.get('receive_count', 0) + 1
@@ -177,7 +157,7 @@ def leave(message):
           'count': session['receive_count']})
 
 
-@socketio.on('close room', namespace='/test')
+@socketio_app.on('close room', namespace='/test')
 def close(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response', {'data': 'Room ' + message['room'] + ' is closing.',
@@ -186,7 +166,7 @@ def close(message):
     close_room(message['room'])
 
 
-@socketio.on('my room event', namespace='/test')
+@socketio_app.on('my room event', namespace='/test')
 def send_room_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
@@ -194,7 +174,7 @@ def send_room_message(message):
          room=message['room'])
 
 
-@socketio.on('disconnect request', namespace='/test')
+@socketio_app.on('disconnect request', namespace='/test')
 def disconnect_request():
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
@@ -202,15 +182,15 @@ def disconnect_request():
     disconnect()
 
 
-@socketio.on('connect', namespace='/test')
+@socketio_app.on('connect', namespace='/test')
 def test_connect():
     emit('my response', {'data': 'Connected', 'count': 0})
 
 
-@socketio.on('disconnect', namespace='/test')
+@socketio_app.on('disconnect', namespace='/test')
 def test_disconnect():
     print('Client disconnected', request.sid)
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio_app.run(app, debug=True)

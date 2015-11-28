@@ -130,6 +130,8 @@ class Recognizer(AudioSource):
             elif system == 'Darwin':
                 # HERE IS THE CHANGE WE NEED TO SOLVE IT
                 flac_converter = os.path.join(path, "flac-mac")
+                # flac_converter = "flac"
+                print flac_converter
             else:
                 raise system.ChildProcessError("FLAC conversion utility not available - consider installing the FLAC command line application")
         process = subprocess.Popen("\"%s\" --stdout --totally-silent --best -" % flac_converter, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
@@ -262,8 +264,7 @@ def shutil_which(pgm):
         p = os.path.join(p, pgm)
         if os.path.exists(p) and os.access(p, os.X_OK):
             return p
- 
- 
+
  
 if __name__ == "__main__":
  
