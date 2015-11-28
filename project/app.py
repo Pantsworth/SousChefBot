@@ -40,6 +40,7 @@ app.config['SECRET_KEY'] = "q"
 socketio_app = SocketIO(app, async_mode=async_mode)
 speech_thread = None
 socket_thread = None
+url = ""
 
 
 def background_thread():
@@ -59,7 +60,8 @@ def demo_function():
              {'data': "ew", 'count': 1})
     # with app.test_request_context('/recipe', method='POST', namespace = "/test"):
     # print "app context is: " + current_app.name
-    recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+    url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
+    recipe = parser.parse_recipe(url)
     speech_engine = speech_response.VoiceEngine()
     speech_engine.say_this("This is a recipe for: " + recipe.title)
     result = ""
@@ -95,9 +97,11 @@ def demo_function():
 
 @app.route('/')
 def jsonreq():
+    print "index"
     global socket_thread
     global speech_thread
-    print "index"
+    global url
+
     if socket_thread is None:
         socket_thread = Thread(target=background_thread)
         socket_thread.daemon = True
@@ -115,6 +119,8 @@ def jsonreq():
 
 @app.route('/recipe')
 def index():
+
+    print "rendering the page?"
     url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
     recipe_object = parser.parse_recipe(url)     # parse html with our parser
 

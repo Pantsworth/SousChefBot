@@ -34,9 +34,6 @@ class VoiceEngine:
             self.engine.say("A B C D E F G H I J K L M")
             self.engine.say("N O P Q R S T U V W X Y Z")
             self.engine.say("0 1 2 3 4 5 6 7 8 9")
-            self.engine.say("Sunday Monday Tuesday Wednesday Thursday Friday Saturday")
-            self.engine.say("Violet Indigo Blue Green Yellow Orange Red")
-            self.engine.say("Apple Banana Cherry Date Guava")
         self.engine.runAndWait()
         return
 
@@ -90,18 +87,23 @@ def choose_response(recipe_object, wit_input, kb_object):
     
     elif intent == 'get_ingredient_amount':
         if not wit_input[u'outcomes'][0][u'entities']:
+            print "response failed"
             return response
         else:
             wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
-
+            if wanted_ingredient == {}:
+                print "Could not find ingredient."
+                return "No Ingredient Found"
         try:
             wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
         except KeyError:
             # wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0]
             wanted_ingredient = None
-            return False
+            print "Could not find ingredient."
+            return "No Ingredient Found"
 
         print "Wanted Ingredient is: ", wanted_ingredient
+
         ingredients_found = ""
         for ingredient in recipe_object.ingredients:
             if wanted_ingredient in ingredient:

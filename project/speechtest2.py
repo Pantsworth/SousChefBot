@@ -39,6 +39,8 @@ def background_listen():
 
     if re.compile(r'\bcomputer\b', flags=re.IGNORECASE).search(r.recognize_wit(audio, key=WIT_AI_KEY)):
         magic_word_status = True
+        play_audio.play_ding()
+
     else:
         magic_word_status = False
 
