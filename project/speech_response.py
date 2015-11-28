@@ -3,20 +3,27 @@ import json
 import parser
 import sys, os
 
+
+
 class VoiceEngine:
     """
     Text to speech with pyttsx. Initialized as an object with associated functions.
     """
     def __init__(self):
-        try:
-            import pyttsx
-            self.engine = pyttsx.init()
-            self.engine.setProperty('rate', 190)
-
-        except ImportError:
+        death_to_pyttsx = True
+        if death_to_pyttsx:
             self.engine = None
-            print "Pyttsx import failed - Using Mac System Voice."
-            # print self.engine.getProperty("voice")
+            print "Pyttsx isn't worth it anyway. If you're not on a Mac, this will fail (set death_to_pyttsx to False)."
+        else:
+            try:
+                import pyttsx
+                self.engine = pyttsx.init()
+                self.engine.setProperty('rate', 190)
+
+            except ImportError:
+                self.engine = None
+                print "Pyttsx import failed - Using Mac System Voice."
+                # print self.engine.getProperty("voice")
 
     def test(self):
         voices = self.engine.getProperty('voices')
