@@ -72,8 +72,8 @@ def demo_function():
     #                   {'data': 'Generated. Sleeping for 3.', 'count': count},
     #                   namespace='/test')
     #
-
-    while ("stop" not in response):
+   # while ("stop" not in response):
+    while True:
         print "starting speech loop"
  #       socketio_app.emit('my response',
  #            {'data': "starting speech loop", 'count':1}, namespace='/test')
@@ -87,12 +87,13 @@ def demo_function():
         else:
           query = result[u'outcomes'][0][u'_text']
           response = speech_response.choose_response(recipe, result, None)
-          speech_engine.say_this(response)
           print response
           socketio_app.emit('my response',
-              {'data': "You: " + query, 'count':4}, namespace='/test')
+              {'data': "You: " + query, 'count':4}, namespace='/test') 
+          speech_engine.say_this(response)
           socketio_app.emit('my response',
               {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
+        eventlet.sleep(0)
         # result = "stop"
         # response = "stopping"
 
