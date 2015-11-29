@@ -23,7 +23,7 @@
             // event handler for server sent data
             // the data is displayed in the "Received" section of the page
             socket.on('my response', function(msg) {
-              $('#log').append('<br><br>' + msg.data);
+              $('#log').append('<br>' + msg.data);
             });
 
             //event handler for new connections
@@ -51,38 +51,40 @@
   </nav>
 <div class="container">
    
-      <div class="header">
-          <h3 class="green-text">{{html_title}}</h3>
-      </div>
+  <div class="header">
+    <h3 class="recipe-title green-text text-darken-2">{{html_title}}</h3>
+  </div>
  
-     <div class="row">
+  <div class="row">
     <div class="col s6">
-    <div class="container">
-      <div class="contrainer"> 
-        <h5 class="green-text text-darken-2">{{html_yield}}</h5>
-        <h5 class="green-text text-darken-2">Ingredients: </h5>
+      <div class="container">
+        <h4 class="green-text text-darken-2">Parsed Recipe</h4>
+        <div class="section">
+          <h5 class="green-text text-darken-2">Yield: </h5>
+          <h6>{{html_yield}}</h6>
+        </div>
+        <div class="divider"></div>
+        <h5 class="section green-text text-darken-2">Ingredients: </h5>
         <ul>
           {% for item in html_ingredients %}
           <li>{{item}}</li>
           {% endfor %}
         </ul>
-        <h5 class="green-text text-darken-2">Instructions: </h5>
+        <div class="divider"></div>
+        <h5 class="section green-text text-darken-2">Instructions: </h5>
         <ol>
           {% for item in html_instructions %}
           <li> {{item}}</li>
           {% endfor %}
         </ol>
       </div>
-      </div>
     </div>
     <div class="col s6">
-      <h4>Say Hi to SousChefBot</h4>
-    <div class ="container">
-    
-        <p class="green-text text-darken-2">Let's get cooking! Gather your ingredients</p>
-        <p class="green-text text-darken-2">Have any questions?</p>      
-
-        <p id="log"></p>
+      <div class="container">
+        <h4 class="section green-text text-darken-2">Say Hi to SousChefBot</h4>
+        <h6 class="green-text text-darken-2">Let's get cooking! Gather your ingredients.</h5>
+        <h6 class="green-text text-darken-2">Have any questions?</h5>
+        <h5 id="log"></h5>
       </div>
     </div>
   </div>
