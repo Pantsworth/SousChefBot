@@ -64,19 +64,23 @@
           <h6>{{html_yield}}</h6>
         </div>
         <div class="divider"></div>
-        <h5 class="section green-text text-darken-2">Ingredients: </h5>
-        <ul>
-          {% for item in html_ingredients %}
-          <li>{{item}}</li>
-          {% endfor %}
-        </ul>
+        <div class="section">
+          <h5 class="green-text text-darken-2">Ingredients: </h5>
+          <ul>
+            {% for item in html_ingredients %}
+            <li>{{item}}</li>
+            {% endfor %}
+          </ul>
+        </div>
         <div class="divider"></div>
-        <h5 class="section green-text text-darken-2">Instructions: </h5>
-        <ol>
-          {% for item in html_instructions %}
-          <li> {{item}}</li>
-          {% endfor %}
-        </ol>
+        <div class="section">
+          <h5 class="green-text text-darken-2">Instructions: </h5>
+          <ol>
+            {% for item in html_instructions %}
+            <li> {{item}}</li>
+            {% endfor %}
+          </ol>
+        </div>
       </div>
     </div>
     <div class="col s6">
