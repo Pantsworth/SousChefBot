@@ -151,7 +151,27 @@ def choose_response(recipe_object, wit_input, kb_object):
         list_tool = recipe_object.tools
         indices = [i for i, s in enumerate(list_tool) if tool in s]
         if indices:
-          response = "Learn how to use " +  list_tool[indices[0]] + " here http://www.wikihow.com/Use-a-Knife"
+            for i in indices:
+                if list_tool[i] == 'knife':
+                    response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Use-a-Knife"
+                elif list_tool[i] == 'spring form':
+                    response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Remove-Cheesecake-from-a-Springform-Pan"
+                elif list_tool[i] == 'blender':
+                    response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Use-a-Blender"
+                elif list_tool[i] == 'garlic press':
+                    response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Crush-Garlic#Using_a_Garlic_Press_sub"
+                elif list_tool[i] == 'hand mixer':
+                    response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Use-a-Hand-Mixer"
+                elif list_tool[i] == 'food processor':
+                    response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Use-a-Food-Processor"
+                elif list_tool[i] == 'vegetable peeler':
+                    response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Peel-a-Carrot#Using_a_Vegetable_Peeler_sub"
+                elif list_tool[i] == 'food processor':
+                    response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Use-a-Food-Processor"
+                elif list_tool[i] == 'oven':
+                    response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Use-an-Oven"
+
+
         else:
             response = "could not find tools"
 
