@@ -33,6 +33,7 @@ from threading import Thread
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 import speech_response, speechtest2
+from parser_package import kb
 
 
 app = Flask(__name__)
@@ -41,7 +42,7 @@ socketio_app = SocketIO(app, async_mode=async_mode)
 speech_thread = None
 socket_thread = None
 url = ""
-
+k_base = None
 
 def background_thread():
     """Example of how to send server generated events to clients."""
@@ -58,8 +59,10 @@ def demo_function():
     print "in the demo function"
     # with app.test_request_context('/recipe', method='POST', namespace = "/test"):
     # print "app context is: " + current_app.name
+
+
     url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
-    recipe = parser.parse_recipe(url)
+    recipe = parser.parse_recipe(url, k_base)
     speech_engine = speech_response.VoiceEngine()
     speech_engine.say_this("This is a recipe for: " + recipe.title)
     result = ""
@@ -77,7 +80,7 @@ def demo_function():
         print "starting speech loop"
  #       socketio_app.emit('my response',
  #            {'data': "starting speech loop", 'count':1}, namespace='/test')
-        result = speechtest2.run_speech_rec()
+        result = speechtest2.run_speech_rec(speech_engine)
         if result == "Response Failed":
           response = "I'm sorry, I did not get that. Can you repeat your command?" 
           speech_engine.say_this(response)
@@ -111,6 +114,9 @@ def index():
     global socket_thread
     global speech_thread
     global url
+    global k_base
+    k_base = kb.KnowledgeBase()
+    k_base.load()
 
     if socket_thread is None:
         socket_thread = Thread(target=background_thread)
@@ -127,7 +133,7 @@ def index():
 
     print "rendering the page?"
     url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
-    recipe_object = parser.parse_recipe(url)     # parse html with our parser
+    recipe_object = parser.parse_recipe(url, k_base)     # parse html with our parser
 
     recipe_title = recipe_object.title
     recipe_yield = recipe_object.servings

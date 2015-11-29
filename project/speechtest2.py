@@ -160,7 +160,7 @@ def new_background_listen():
 
     if "computer" in text:
         magic_word_status = True
-        play_audio.play_ding()
+        # play_audio.play_ding()
 
         # speech_engine = speech_response.VoiceEngine()
         # speech_engine.say_this("Yes?")
@@ -170,12 +170,13 @@ def new_background_listen():
     return magic_word_status
 
 # speech recognition function
-def run_speech_rec():
+def run_speech_rec(speech_engine):
     background = False
     while not background:
-        background = background_listen()
+        background = new_background_listen()
         print "Magic Word Status: ", background
         if background:
+            speech_engine.say_this("Yes?")
             break
 
     command = start_speech_rec()

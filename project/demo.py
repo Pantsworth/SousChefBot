@@ -8,11 +8,14 @@ import util
 
 def demo_function(recipe_object):
 
+    k_base = kb.KnowledgeBase()
+    k_base.load()
+
     # preamble for human-friendly opening
     preamble = False
 
     result = ""
-    recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
+    recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/", k_base)
     # recipe = parser.parse_recipe("http://allrecipes.com/recipe/235653/crispy-chicken-nuggets/")
     recipe.print_recipe()
 
@@ -39,8 +42,10 @@ def demo_function(recipe_object):
 
     while ("stop" not in result):
 
-        result = speechtest2.run_speech_rec()
-        response = speech_response.choose_response(recipe, result, None)
+        speech_engine.say_this("Listening")
+
+        result = speechtest2.run_speech_rec(speech_engine)
+        response = speech_response.choose_response(recipe, result, k_base)
 
         question_collector.append(result)
         answer_collector.append(response)

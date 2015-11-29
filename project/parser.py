@@ -12,13 +12,11 @@ import recipe
 import util
 
 
-def parse_recipe(url):
+def parse_recipe(url, k_base):
     """Calls CLI and runs our PHP recipe_parser function. Returns JSON
     :param url: URL for recipe.
     :return: JSON recipe object, formatted by our delightful PHP library.
     """
-    k_base = kb.KnowledgeBase()
-    k_base.load()
 
     if validate_url(url) is None:
         return
