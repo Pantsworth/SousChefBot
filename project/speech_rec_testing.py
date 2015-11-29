@@ -102,8 +102,8 @@ class Recognizer(AudioSource):
         self.language = language
  
         self.energy_threshold = 100 # minimum audio energy to consider for recording
-        self.pause_threshold = 0.3 # seconds of quiet time before a phrase is considered complete
-        self.quiet_duration = 0.2 # amount of quiet time to keep on both sides of the recording
+        self.pause_threshold = 0.2 # seconds of quiet time before a phrase is considered complete
+        self.quiet_duration = 0.1 # amount of quiet time to keep on both sides of the recording
  
     def samples_to_flac(self, source, frame_data):
         import platform, os
@@ -129,9 +129,8 @@ class Recognizer(AudioSource):
                 flac_converter = os.path.join(path, "flac-linux-i386")
             elif system == 'Darwin':
                 # HERE IS THE CHANGE WE NEED TO SOLVE IT
-                flac_converter = os.path.join(path, "flac-mac")
-                # flac_converter = "flac"
-                print flac_converter
+                # flac_converter = os.path.join(path, "flac-mac")
+                flac_converter = "/opt/local/bin/flac"
             else:
                 raise system.ChildProcessError("FLAC conversion utility not available - consider installing the FLAC command line application")
         process = subprocess.Popen("\"%s\" --stdout --totally-silent --best -" % flac_converter, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
