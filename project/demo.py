@@ -42,7 +42,7 @@ def demo_function(recipe_object):
 
     while ("stop" not in result):
 
-        speech_engine.say_this("Listening.")
+        speech_engine.say_this("Listening")
 
         result = speechtest2.run_speech_rec(speech_engine)
         response = speech_response.choose_response(recipe, result, k_base)
