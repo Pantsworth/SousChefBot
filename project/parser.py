@@ -63,7 +63,6 @@ def parse_recipe(url, k_base):
         for step in parsed_json['instructions']:
             for sent in find_sentences(step):
                 step_list.append(util.handle_fractions(sent))
-    print step_list
 
     new_recipe = recipe.Recipe(parsed_json['title'], parsed_json['yield'], parsed_json['ingredients'], step_list)
     new_recipe.tools = find_cooking_tools(new_recipe.instructions, k_base)
@@ -186,7 +185,8 @@ def find_sentences(paragraph):
                 sentences.remove(sentences[1])
                 sentences.remove(sentences[0])
             else:
-                pass
+                combined_sent.append(sentences[0])
+                sentences.remove(sentences[0])
         else:
             combined_sent.append(sentences[0])
             sentences.remove(sentences[0])
@@ -251,5 +251,5 @@ def find_all(a_str, sub):
 #
 # startup()
 
-# human_readable_object(parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/", None))
+human_readable_object(parse_recipe("http://allrecipes.com/recipe/139726/microwave-mexican-manicotti/", None))
 
