@@ -17,7 +17,7 @@ def parse_recipe(url, k_base):
     :param url: URL for recipe.
     :return: JSON recipe object, formatted by our delightful PHP library.
     """
-
+    print "got inside parse_recipe"
     if k_base == None:
         k_base = kb.KnowledgeBase()
         k_base.load()

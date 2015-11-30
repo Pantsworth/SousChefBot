@@ -107,7 +107,7 @@ def jsonreq():
     return render_template('form.html')
 
 
-@app.route('/recipe')
+@app.route('/recipe', methods=['POST'])
 def index():
 
     global socket_thread
@@ -115,17 +115,18 @@ def index():
 
     k_base = kb.KnowledgeBase()
     k_base.load()
-    url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
+    #url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
+    url = request.form['url']
+    print "this is url from form " + url
 
     recipe_object = parser.parse_recipe(url, k_base)     # parse html with our parser
-
     # if socket_thread is None:
     #     socket_thread = Thread(target=background_thread)
     #     socket_thread.daemon = True
     #     socket_thread.start()
     #     print "started bkg thread"
-    #
-    test = True
+    
+    print recipe_object
     if speech_thread is None:
         eventlet.greenthread.spawn_after(2, demo_function, recipe_object, k_base, url)
         # speech_thread = Thread(target=demo_function)
