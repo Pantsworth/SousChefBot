@@ -41,11 +41,6 @@ app.config['SECRET_KEY'] = "q"
 socketio_app = SocketIO(app, async_mode=async_mode)
 speech_thread = None
 socket_thread = None
-url = ""
-k_base = None
-global recipe_object
-recipe_object = None
-
 
 def background_thread():
     """Example of how to send server generated events to clients."""
@@ -58,17 +53,13 @@ def background_thread():
                       namespace='/test')
     """
 
-def demo_function():
+def demo_function(parsed_recipe, k_base, url):
     print "in the demo function"
     # with app.test_request_context('/recipe', method='POST', namespace = "/test"):
     # print "app context is: " + current_app.name
-    global recipe_object
-    global url
-    global k_base
 
-    url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
-    if recipe_object is not None:
-        recipe = recipe_object
+    if parsed_recipe is not None:
+        recipe = parsed_recipe
     else:
         print "Recipe object not found. Generating object."
         recipe = parser.parse_recipe(url, k_base)
@@ -121,9 +112,6 @@ def index():
 
     global socket_thread
     global speech_thread
-    global url
-    global k_base
-    global recipe_object
 
     k_base = kb.KnowledgeBase()
     k_base.load()
@@ -137,8 +125,9 @@ def index():
     #     socket_thread.start()
     #     print "started bkg thread"
     #
+    test = True
     if speech_thread is None:
-        eventlet.greenthread.spawn_after(2, demo_function)
+        eventlet.greenthread.spawn_after(2, demo_function, recipe_object, k_base, url)
         # speech_thread = Thread(target=demo_function)
         # speech_thread.daemon = False
         # speech_thread.spawn_after(5)
