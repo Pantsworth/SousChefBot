@@ -31,13 +31,13 @@ def handle_fractions(string):
     """
     index = string.find('/')
     result = string
-    number_list = [0,1,2,3,4,5,6,7,8,9]
+    number_list = "0123456789"
 
     while index is not -1:
         denominator = index+1
         result = result.replace(result[index:index+2], denom(result[denominator]))
-        # if result[index-3] is in number_list:
-        #     result = result.replace
+        if result[index-3] in number_list:
+            result = result[:index-2] + " and " + result[index-1:]
         index = result.find('/')
         # print index
         # print result
@@ -54,4 +54,5 @@ def denom(x):
         '7': " seventh"
     }.get(x, " ")
 
+handle_fractions("3 1/2 pounds celery")
 
