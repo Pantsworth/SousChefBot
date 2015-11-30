@@ -54,9 +54,9 @@ def background_thread():
     """
 
 def demo_function(parsed_recipe, k_base, url):
-    print "in the demo function"
     # with app.test_request_context('/recipe', method='POST', namespace = "/test"):
     # print "app context is: " + current_app.name
+    preamble = True
 
     if parsed_recipe is not None:
         recipe = parsed_recipe
@@ -65,19 +65,16 @@ def demo_function(parsed_recipe, k_base, url):
         recipe = parser.parse_recipe(url, k_base)
     speech_engine = speech_response.VoiceEngine()
     speech_engine.say_this("This is a recipe for: " + recipe.title)
-    result = ""
-    response = ""
-    # count = 0
-    # while True:
-    #     time.sleep(3)
-    #     count += 1
-    #     socketio_app.emit('my response',
-    #                   {'data': 'Generated. Sleeping for 3.', 'count': count},
-    #                   namespace='/test')
-    #
+    if preamble:
+        time.sleep(1)
+        speech_engine.say_this("The first step is: " + recipe.instructions[0])
+        time.sleep(1)
+        speech_engine.say_this("Say Computer, Computer to get me to wake up")
+        time.sleep(2)
+
    # while ("stop" not in response):
     while True:
-        print "starting speech loop"
+        speech_engine.say_this("Listening")
         result = speechtest2.run_speech_rec(speech_engine)
 
         if result == "Response Failed":
@@ -117,7 +114,7 @@ def index():
     k_base.load()
     #url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
     url = request.form['url']
-    print "this is url from form " + url
+    # print "this is url from form " + url
 
     recipe_object = parser.parse_recipe(url, k_base)     # parse html with our parser
     # if socket_thread is None:
@@ -126,16 +123,15 @@ def index():
     #     socket_thread.start()
     #     print "started bkg thread"
     
-    print recipe_object
     if speech_thread is None:
         eventlet.greenthread.spawn_after(2, demo_function, recipe_object, k_base, url)
+        print "started speech thread"
         # speech_thread = Thread(target=demo_function)
         # speech_thread.daemon = False
         # speech_thread.spawn_after(5)
-        print "started speech thread"
 
 
-    print "rendering the page?"
+    print "Rendering Recipe Page"
 
     recipe_title = recipe_object.title
     recipe_yield = recipe_object.servings
@@ -167,4 +163,4 @@ def main():
 #
 #
 if __name__ == '__main__':
-    socketio_app.run(app, debug=True)
+    socketio_app.run(app, debug=False)

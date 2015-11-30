@@ -13,7 +13,7 @@ class VoiceEngine:
         death_to_pyttsx = True
         if death_to_pyttsx:
             self.engine = None
-            print "Pyttsx isn't worth it anyway. If you're not on a Mac, this will fail (set death_to_pyttsx to False)."
+            print "Going without pyttsx. If you're not on a Mac, this will fail (set death_to_pyttsx to False)."
         else:
             try:
                 import pyttsx
@@ -207,6 +207,9 @@ def choose_response(recipe_object, wit_input, kb_object):
     elif intent=='technique_how_to':
         #TODO
         response = "error"
+
+    elif intent == "first_step":
+        response = "First step is: " + recipe_object.instructions[0]
 
     elif intent == 'which_tool':
         choose_tool = wit_input[u'outcomes'][0][u'entities']
