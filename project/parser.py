@@ -52,24 +52,25 @@ def parse_recipe(url, k_base):
     recipe_json = recipe_json[0] + recipe_json[1]
     # print recipe_json
     parsed_json = json.loads(recipe_json)
-
+    print parsed_json
 
     # clean up the ingredients formatting
     if parsed_json['ingredients'][0] is not None:
         parsed_json['ingredients'] = parsed_json['ingredients'][0]['list']
+        print parsed_json['ingredients']
 
     if parsed_json['instructions'][0]['list'] is not None:
         parsed_json['instructions'] = parsed_json['instructions'][0]['list']
         for step in parsed_json['instructions']:
             for sent in find_sentences(step):
-                step_list.append(util.handle_fractions(sent))
+                step_list.append(util.sanitize_step(util.handle_fractions(sent.encode(encoding='ascii', errors='ignore'))))
 
     new_recipe = recipe.Recipe(parsed_json['title'], parsed_json['yield'], parsed_json['ingredients'], step_list)
     new_recipe.tools = find_cooking_tools(new_recipe.instructions, k_base)
     new_recipe.methods = find_cooking_methods(new_recipe.instructions, k_base)
 
     for i in range(len(new_recipe.ingredients)):
-        new_recipe.ingredients[i] = util.sanitize_step(util.handle_fractions(new_recipe.ingredients[i].encode(encoding='utf-8', errors='strict')))
+        new_recipe.ingredients[i] = util.sanitize_step(util.handle_fractions(new_recipe.ingredients[i].encode(encoding='utf-8', errors='ignore')))
 
     for i in range(len(new_recipe.instructions)):
         new_recipe.instructions[i] = util.sanitize_step(new_recipe.instructions[i])
@@ -251,5 +252,5 @@ def find_all(a_str, sub):
 #
 # startup()
 
-human_readable_object(parse_recipe("http://allrecipes.com/recipe/139726/microwave-mexican-manicotti/", None))
+# human_readable_object(parse_recipe("http://allrecipes.com/recipe/139726/microwave-mexican-manicotti/", None))
 

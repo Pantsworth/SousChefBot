@@ -87,7 +87,7 @@ def choose_response(recipe_object, wit_input, kb_object):
     
     elif intent == 'get_ingredient_amount':
         if not wit_input[u'outcomes'][0][u'entities']:
-            print "response failed"
+            response = "response failed"
             return response
         else:
             wanted_ingredient = wit_input[u'outcomes'][0][u'entities'][u'food'][0][u'value']
@@ -112,8 +112,10 @@ def choose_response(recipe_object, wit_input, kb_object):
                     ingredients_found = ingredient + " AND " + ingredients_found
                 else:
                     ingredients_found = ingredient
-
-        response = ingredients_found
+        if ingredients_found == "":
+            response = "Could not find ingredient"
+        else:
+            response = ingredients_found
 
     elif intent == 'get_temperature':
         temp_response = ""
@@ -170,8 +172,6 @@ def choose_response(recipe_object, wit_input, kb_object):
                     response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Use-a-Food-Processor"
                 elif list_tool[i] == 'oven':
                     response = "Learn how to use " +  list_tool[indices[i]] + " here http://www.wikihow.com/Use-an-Oven"
-
-
         else:
             response = "could not find tools"
 
