@@ -3,7 +3,7 @@ __author__ = 'Michael Nowakowski'
 
 class Recipe:
 
-    def __init__(self, title='', servings=0, ingredients=None, instructions=None):
+    def __init__(self, title='', servings=0, ingredients=None, instructions=None, photo_url=None):
         self.title = title
         self.servings = servings
         self.ingredients = ingredients
@@ -12,6 +12,7 @@ class Recipe:
         self.methods = []
         self.tools = []
         self.current_step = 0
+        self.photo_url = photo_url
         # if ingredients:
         #     self.add_ingredients(ingredients)
         # if instructions:

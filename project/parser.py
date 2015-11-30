@@ -17,7 +17,6 @@ def parse_recipe(url, k_base):
     :param url: URL for recipe.
     :return: JSON recipe object, formatted by our delightful PHP library.
     """
-    print "got inside parse_recipe"
     if k_base == None:
         k_base = kb.KnowledgeBase()
         k_base.load()
@@ -52,7 +51,7 @@ def parse_recipe(url, k_base):
     recipe_json = recipe_json[0] + recipe_json[1]
     # print recipe_json
     parsed_json = json.loads(recipe_json)
-    # print parsed_json
+    print parsed_json
 
     # clean up the ingredients formatting
     if parsed_json['ingredients'][0] is not None:
@@ -66,7 +65,7 @@ def parse_recipe(url, k_base):
                 step_list.append(util.sanitize_step(util.handle_fractions(sent.encode(encoding='ascii', errors='ignore'))))
 
     new_title = util.sanitize_step(parsed_json['title']).encode('ascii','ignore')
-    new_recipe = recipe.Recipe(new_title, parsed_json['yield'], parsed_json['ingredients'], step_list)
+    new_recipe = recipe.Recipe(new_title, parsed_json['yield'], parsed_json['ingredients'], step_list, parsed_json['photo_url'])
     new_recipe.tools = find_cooking_tools(new_recipe.instructions, k_base)
     new_recipe.methods = find_cooking_methods(new_recipe.instructions, k_base)
 

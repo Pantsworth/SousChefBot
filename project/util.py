@@ -16,7 +16,7 @@ def sanitize_step(step):
     :return: sanitized version for speech
     """
     new_step = step
-    bad_char_list = [";", "(", ")","'",'"',]
+    bad_char_list = [";", "(", ")", "'", '"']
     for char in bad_char_list:
         new_step = new_step.replace(char, "")
 

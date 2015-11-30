@@ -29,7 +29,6 @@ if async_mode == 'eventlet':
 import parser
 from flask import Flask, render_template, request, session, current_app
 import time
-from threading import Thread
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 import speech_response, speechtest2
@@ -69,7 +68,7 @@ def demo_function(parsed_recipe, k_base, url):
         time.sleep(1)
         speech_engine.say_this("The first step is: " + recipe.instructions[0])
         time.sleep(1)
-        speech_engine.say_this("Say Computer, Computer to get me to wake up")
+        speech_engine.say_this("Say Computer, Computer, to get me to wake up")
         time.sleep(2)
 
    # while ("stop" not in response):
@@ -102,7 +101,6 @@ def demo_function(parsed_recipe, k_base, url):
 @app.route('/')
 def jsonreq():
     print "index"
-
     return render_template('form.html')
 
 
@@ -119,11 +117,6 @@ def index():
     # print "this is url from form " + url
 
     recipe_object = parser.parse_recipe(url, k_base)     # parse html with our parser
-    # if socket_thread is None:
-    #     socket_thread = Thread(target=background_thread)
-    #     socket_thread.daemon = True
-    #     socket_thread.start()
-    #     print "started bkg thread"
     
     if speech_thread is None:
         eventlet.greenthread.spawn_after(2, demo_function, recipe_object, k_base, url)
@@ -139,9 +132,11 @@ def index():
     recipe_yield = recipe_object.servings
     recipe_ingredients = recipe_object.ingredients
     recipe_instructions = recipe_object.instructions
+    photo_url = recipe_object.photo_url
+    print photo_url
 
     return render_template('recipe.html', html_title=recipe_title, html_yield=recipe_yield,
-                           html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata="")
+                           html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata="", html_photo=photo_url)
 
 @socketio_app.on('disconnect request', namespace='/test')
 def disconnect_request():
