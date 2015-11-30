@@ -5,7 +5,24 @@
  *
  * Made By MaterializeCSS.com
  */
+.q-and-a{
+  float:left;
+overflow-y: auto;
+max-height: 500px;
+}
 
+.q-and-a::-webkit-scrollbar {
+    width: .7em;
+}
+ 
+.q-and-a::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+}
+ 
+.q-and-a::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
 
 nav ul a,
 nav .brand-logo {

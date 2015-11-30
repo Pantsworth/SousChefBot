@@ -23,7 +23,7 @@
             // event handler for server sent data
             // the data is displayed in the "Received" section of the page
             socket.on('my response', function(msg) {
-              $('#log').append('<br>' + msg.data);
+              $('#log').prepend(msg.data + '<br><br>');
             });
 
             //event handler for new connections
@@ -57,7 +57,7 @@
  
   <div class="row">
     <div class="col s6">
-      <div class="container">
+      <div class="container recipe-view">
         <h4 class="green-text text-darken-2">Parsed Recipe</h4>
         <div class="section">
           <h5 class="green-text text-darken-2">Yield: </h5>
@@ -87,8 +87,10 @@
       <div class="container">
         <h4 class="section green-text text-darken-2">Say Hi to SousChefBot</h4>
         <h6 class="green-text text-darken-2">Let's get cooking! Gather your ingredients.</h5>
-        <h6 class="green-text text-darken-2">Have any questions?</h5>
-        <h5 id="log"></h5>
+        <h6 class="green-text text-darken-2">Have any questions?</h5> <br>
+        <div class="q-and-a">
+          <h5 id="log"></h5>
+        </div>
       </div>
     </div>
   </div>
