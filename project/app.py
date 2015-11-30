@@ -138,9 +138,10 @@ def index():
     #     print "started bkg thread"
     #
     if speech_thread is None:
-        speech_thread = Thread(target=demo_function)
-        speech_thread.daemon = False
-        speech_thread.start()
+        eventlet.greenthread.spawn_after(2, demo_function)
+        # speech_thread = Thread(target=demo_function)
+        # speech_thread.daemon = False
+        # speech_thread.spawn_after(5)
         print "started speech thread"
 
 

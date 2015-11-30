@@ -54,5 +54,4 @@ def denom(x):
         '7': " seventh"
     }.get(x, " ")
 
-handle_fractions("3 1/2 pounds celery")
 
