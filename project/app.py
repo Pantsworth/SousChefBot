@@ -88,24 +88,25 @@ def demo_function():
     while True:
         print "starting speech loop"
         result = speechtest2.run_speech_rec(speech_engine)
+
         if result == "Response Failed":
-          response = "I'm sorry, I did not get that. Can you repeat your command?" 
-          speech_engine.say_this(response)
-          print response
-          socketio_app.emit('my response',
+            response = "I'm sorry, I did not get that. Can you repeat your command?"
+            speech_engine.say_this(response)
+            print response
+            socketio_app.emit('my response',
               {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
         else:
-          query = result[u'outcomes'][0][u'_text']
-          response = speech_response.choose_response(recipe, result, None)
-          print response
-          socketio_app.emit('my response',
-              {'data': "You: " + query, 'count':4}, namespace='/test') 
-          speech_engine.say_this(response)
-          socketio_app.emit('my response',
+            query = result[u'outcomes'][0][u'_text']
+            response = speech_response.choose_response(recipe, result, None)
+            print response
+            socketio_app.emit('my response',
+              {'data': "You: " + query, 'count':4}, namespace='/test')
+            speech_engine.say_this(response)
+            socketio_app.emit('my response',
               {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
+            if response == "stopping":
+                break
         eventlet.sleep(0)
-        # result = "stop"
-        # response = "stopping"
 
 
 @app.route('/')
