@@ -11,6 +11,10 @@ overflow-y: auto;
 max-height: 500px;
 }
 
+.highlight {
+    background: yellow;
+}
+
 .q-and-a::-webkit-scrollbar {
     width: .7em;
 }
