@@ -190,7 +190,7 @@ def choose_response(recipe_object, wit_input, kb_object):
     elif intent == 'navigate_forward':
         if recipe_object.current_step is not len(recipe_object.instructions)-1:
             recipe_object.next_step()
-            response = "Moving to next step. Next step is " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
+            response = "Next step is " + sanitize_step(recipe_object.instructions[recipe_object.current_step])
         else:
             response = "Already on last step. Step is: " + recipe_object.instructions[recipe_object.current_step]
 

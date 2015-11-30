@@ -75,6 +75,16 @@ ol {
 .icon-block {
   padding: 0 15px;
 }
+
+
+.recipeimage {
+    padding-top: 20px;
+    display: block;
+    margin: 0 auto;
+    height: 35%;
+    width: 35%;
+}
+
 .icon-block .material-icons {
   font-size: inherit;
 }
