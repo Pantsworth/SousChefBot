@@ -59,7 +59,8 @@ def demo_function():
     print "in the demo function"
     # with app.test_request_context('/recipe', method='POST', namespace = "/test"):
     # print "app context is: " + current_app.name
-
+    k_base = kb.KnowledgeBase()
+    k_base.load()
 
     url = "http://allrecipes.com/recipe/219173/simple-beef-pot-roast/"        # acquires URL from form.html
     recipe = parser.parse_recipe(url, k_base)
@@ -118,12 +119,12 @@ def index():
     k_base = kb.KnowledgeBase()
     k_base.load()
 
-    if socket_thread is None:
-        socket_thread = Thread(target=background_thread)
-        socket_thread.daemon = True
-        socket_thread.start()
-        print "started bkg thread"
-
+    # if socket_thread is None:
+    #     socket_thread = Thread(target=background_thread)
+    #     socket_thread.daemon = True
+    #     socket_thread.start()
+    #     print "started bkg thread"
+    #
     if speech_thread is None:
         speech_thread = Thread(target=demo_function)
         speech_thread.daemon = False
@@ -160,6 +161,9 @@ def test_connect():
 def test_disconnect():
     print('Client disconnected', request.sid)
 
-
+def main():
+    socketio_app.run(app, debug=True)
+#
+#
 if __name__ == '__main__':
     socketio_app.run(app, debug=True)

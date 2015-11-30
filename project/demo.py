@@ -5,6 +5,7 @@ import speechtest2
 import util
 from parser_package import kb
 import util
+from threading import Thread
 
 def demo_function(recipe_object):
 
@@ -59,8 +60,28 @@ def demo_function(recipe_object):
     return
 
 def main():
-  demo_function(None)
-  return
+    speech_thread = None
+    import app
 
-if __name__ == '__main__':
-  main()
+    # if speech_thread is None:
+        # speech_thread = Thread(target=app.demo_function)
+    #     speech_thread.daemon = False
+    #     speech_thread.start()
+    #     print "started speech thread"
+
+    # app_thread = None
+    # if app_thread is None:
+    #     app_thread = Thread(target=app.main)
+    #     app_thread.daemon = False
+    #     app_thread.start()
+    #     print "started app thread"
+
+
+    app.main()
+    return
+#
+# if __name__ == '__main__':
+#   main()
+
+# main()
+demo_function(None)

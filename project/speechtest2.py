@@ -87,12 +87,15 @@ def background_listen():
 
 
 # speech recognition
-def start_speech_rec():
+def start_speech_rec(speech_engine):
     """
     Once the bot hears our magic word, we can call this to listen for a particular command.
     :return: what wit.ai thought we said
     """
     r = sr.Recognizer()
+    r.pause_threshold = 0.3
+    r.non_speaking_duration= 0.3
+
 
     with sr.Microphone() as source:
         print("*** Yes master? ***")
@@ -102,6 +105,7 @@ def start_speech_rec():
     # recognize speech using Wit.ai
     WIT_AI_KEY = "AXIII6X7MAX2KW6FD27UFMT3VVQXM6WO" # Wit.ai keys are 32-character uppercase alphanumeric strings
     try:
+        speech_engine.say_this("Processing")
         wit_ai_response = r.recognize_wit(audio, key=WIT_AI_KEY)
     except sr.UnknownValueError:
         wit_ai_response = "Wit.ai could not understand audio"
@@ -137,7 +141,7 @@ def wit_call(speechQuery):
 
 
 # better version of background listening using Google Speech Recognition
-def new_background_listen():
+def new_background_listen(speech_engine):
     """
     Listens for our magic word(s) and returns True if it hears them within a certain amount of time.
     :return: Boolean
@@ -173,13 +177,13 @@ def new_background_listen():
 def run_speech_rec(speech_engine):
     background = False
     while not background:
-        background = new_background_listen()
+        background = new_background_listen(speech_engine)
         print "Magic Word Status: ", background
         if background:
             speech_engine.say_this("Yes?")
             break
 
-    command = start_speech_rec()
+    command = start_speech_rec(speech_engine)
 
     result = wit_call(command)
 
