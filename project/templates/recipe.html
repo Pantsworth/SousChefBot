@@ -39,12 +39,13 @@
 
             //listItems.filter('#0').addClass('.highlight');
             //need to replace with if intent = next step via socket event
+            /*
             socket.on('next step', function(){
               $list.eq(i).addClass("highlight");
               $list.eq(i+1).addClass("highlight");
-              i=i+1;
-              console.log(idx);  
+              i=i+1; 
           });
+*/
 
         });
     </script>
@@ -67,8 +68,10 @@
 
 <div class="container">
   <div class="header">
+    <div class="container">
     <img class="recipeimage" src={{html_photo}} alt="HTML5 Icon">
     <h3 class="recipe-title green-text text-darken-2">{{html_title}}</h3>
+  </div>
   </div>
  
   <div class="row">

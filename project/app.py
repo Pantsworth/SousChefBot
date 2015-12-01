@@ -150,9 +150,9 @@ def disconnect_request():
 def test_connect():
     emit('my response', {'data': 'Say "Computer" when you want me to listen! ', 'count': 0})
 
-@socketio_app.on('next step', namespace='/test')
-def next_step():
-    emit('next step', {'data': 'next step', 'count': 5})
+#@socketio_app.on('next step', namespace='/test')
+#def next_step():
+#   emit('next step', {'data': 'next step', 'count': 5})
 
 @socketio_app.on('disconnect', namespace='/test')
 def test_disconnect():

@@ -82,11 +82,9 @@ ol {
 
 
 .recipeimage {
-    padding-top: 20px;
+    padding-top: 2em;
     display: block;
     margin: 0 auto;
-    height: 35%;
-    width: 35%;
 }
 
 .icon-block .material-icons {
