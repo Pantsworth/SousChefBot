@@ -5,6 +5,12 @@
  *
  * Made By MaterializeCSS.com
  */
+
+ .row .col {
+  padding: 0 2.4rem !important; 
+
+ }
+
 .q-and-a{
   float:left;
 overflow-y: auto;
@@ -86,6 +92,7 @@ ol {
     padding-top: 2em;
     display: block;
     margin: 0 auto;
+    max-width: 40%;
 }
 
 .icon-block .material-icons {
