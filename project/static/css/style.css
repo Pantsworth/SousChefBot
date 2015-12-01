@@ -12,7 +12,8 @@ max-height: 500px;
 }
 
 .highlight {
-    background: yellow;
+    font-size: 2em;
+    font-weight: bold;
 }
 
 .q-and-a::-webkit-scrollbar {
