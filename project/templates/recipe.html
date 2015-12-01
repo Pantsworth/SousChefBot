@@ -28,6 +28,13 @@
             // the data is displayed in the "Received" section of the page
             socket.on('my response', function(msg) {
               $('#log').prepend(msg.data + '<br><br>');
+              if (msg.data.indexOf("Next step") != -1){
+                $list.eq(i).removeClass("highlight");
+                $list.eq(i+1).addClass("highlight");
+                i=i+1; 
+                console.log(i);
+              }
+
             });
 
             //event handler for new connections
@@ -40,12 +47,6 @@
             //listItems.filter('#0').addClass('.highlight');
             //need to replace with if intent = next step via socket event
             
-            socket.on('next step', function(){
-              $list.eq(i).removeClass("highlight");
-              $list.eq(i+1).addClass("highlight");
-              i=i+1; 
-              console.log(i);
-            });
         });
     </script>
 </head>

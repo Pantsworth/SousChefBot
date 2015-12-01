@@ -79,19 +79,14 @@ def demo_function(parsed_recipe, k_base, url):
         if result == "Response Failed":
             response = "I'm sorry, I did not get that. Can you repeat your command?"
             speech_engine.say_this(response)
-            print response
             socketio_app.emit('my response',
               {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
         else:
             query = result[u'outcomes'][0][u'_text']
             response = speech_response.choose_response(recipe, result, None)
-            print response
             socketio_app.emit('my response',
               {'data': "You: " + query, 'count':4}, namespace='/test')
             speech_engine.say_this(response)
-            if "next step" in response:
-                print "next step was in response"
-                socketio_app.emit('next step',{'data': "blah", 'count':4}, namespace='/test')
             socketio_app.emit('my response',
               {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
             if response == "stopping":
@@ -150,10 +145,6 @@ def disconnect_request():
 @socketio_app.on('connect', namespace='/test')
 def test_connect():
     emit('my response', {'data': 'Say "Computer" when you want me to listen! ', 'count': 0})
-
-@socketio_app.on('next step', namespace='/test')
-def next_step():
-    emit('next step', {'data': 'next step', 'count': 5})
 
 @socketio_app.on('disconnect', namespace='/test')
 def test_disconnect():
