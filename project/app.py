@@ -41,6 +41,7 @@ socketio_app = SocketIO(app, async_mode=async_mode)
 speech_thread = None
 socket_thread = None
 
+
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
@@ -55,7 +56,7 @@ def background_thread():
 def demo_function(parsed_recipe, k_base, url):
     # with app.test_request_context('/recipe', method='POST', namespace = "/test"):
     # print "app context is: " + current_app.name
-    preamble = True
+    preamble = False
 
     if parsed_recipe is not None:
         recipe = parsed_recipe
@@ -86,9 +87,10 @@ def demo_function(parsed_recipe, k_base, url):
             response = speech_response.choose_response(recipe, result, None)
             socketio_app.emit('my response',
               {'data': "You: " + query, 'count':4}, namespace='/test')
-            speech_engine.say_this(response)
             socketio_app.emit('my response',
               {'data': "SousChefBot: " + response, 'count':4}, namespace='/test')
+            speech_engine.say_this(response)
+
             if response == "stopping":
                 break
         eventlet.sleep(0)
@@ -96,7 +98,7 @@ def demo_function(parsed_recipe, k_base, url):
 
 @app.route('/')
 def jsonreq():
-    print "index"
+    # print "index"
     return render_template('form.html')
 
 
@@ -129,7 +131,6 @@ def index():
     recipe_ingredients = recipe_object.ingredients
     recipe_instructions = recipe_object.instructions
     photo_url = recipe_object.photo_url
-    print photo_url
 
     return render_template('recipe.html', html_title=recipe_title, html_yield=recipe_yield,
                            html_ingredients=recipe_ingredients, html_instructions=recipe_instructions, jsondata="", html_photo=photo_url)
@@ -140,11 +141,11 @@ def disconnect_request():
     emit('my response',
          {'data': 'Disconnected!', 'count': session['receive_count']})
     disconnect()
-
-
-@socketio_app.on('connect', namespace='/test')
-def test_connect():
-    emit('my response', {'data': 'Say "Computer" when you want me to listen! ', 'count': 0})
+#
+#
+# @socketio_app.on('connect', namespace='/test')
+# def test_connect():
+#     emit('my response', {'data': 'Say "Computer" when you want me to listen! ', 'count': 0})
 
 @socketio_app.on('disconnect', namespace='/test')
 def test_disconnect():
