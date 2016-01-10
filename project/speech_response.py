@@ -1,53 +1,66 @@
-from parser_package import kb
-import json
-import parser
-import sys, os
+import urllib2, json
 
+# class VoiceEngine:
+#     """
+#     Text to speech with pyttsx. Initialized as an object with associated functions.
+#     """
+#     def __init__(self):
+#         death_to_pyttsx = True
+#         if death_to_pyttsx:
+#             self.engine = None
+#             print "Going without pyttsx. If you're not on a Mac, this will fail (set death_to_pyttsx to False)."
+#         else:
+#             try:
+#                 import pyttsx
+#                 self.engine = pyttsx.init()
+#                 self.engine.setProperty('rate', 190)
+#
+#             except ImportError:
+#                 self.engine = None
+#                 print "Pyttsx import failed - Using Mac System Voice."
+#                 # print self.engine.getProperty("voice")
+#
+#     def test(self):
+#         voices = self.engine.getProperty('voices')
+#         for voice in voices:
+#             print "Using voice:", repr(voice)
+#             self.engine.setProperty('voice', voice.id)
+#             self.engine.say("Hi there, how's you ?")
+#             self.engine.say("A B C D E F G H I J K L M")
+#             self.engine.say("N O P Q R S T U V W X Y Z")
+#             self.engine.say("0 1 2 3 4 5 6 7 8 9")
+#         self.engine.runAndWait()
+#         return
+#
+#     def say_this(self, phrase):
+#         # print sys.platform
+#         if sys.platform == "darwin":
+#             # print "Mac Speech Synthesizer"
+#             os.system("say " + phrase)
+#         else:
+#             self.engine.say(phrase)
+#             self.engine.runAndWait()
+#         return
 
-
-class VoiceEngine:
+def wit_call(speechQuery):
     """
-    Text to speech with pyttsx. Initialized as an object with associated functions.
+      expects a string with the parsed query
+      ex: "how do you mash potatoes?"
+      returns json object with info
     """
-    def __init__(self):
-        death_to_pyttsx = True
-        if death_to_pyttsx:
-            self.engine = None
-            print "Going without pyttsx. If you're not on a Mac, this will fail (set death_to_pyttsx to False)."
-        else:
-            try:
-                import pyttsx
-                self.engine = pyttsx.init()
-                self.engine.setProperty('rate', 190)
+    s = urllib2.quote(speechQuery)
+    url = "https://api.wit.ai/message?v=20151102&q=" + s
+    auth_token = "4PRXFOGEMZFETD7BCQ56YDMC5MV4FXVZ"
+    req = urllib2.Request(url, None, {"Authorization": "Bearer %s" %auth_token})
+    try:
+        response = urllib2.urlopen(req)
+    except urllib2.HTTPError:
+        response = []
+        return "Response Failed"
 
-            except ImportError:
-                self.engine = None
-                print "Pyttsx import failed - Using Mac System Voice."
-                # print self.engine.getProperty("voice")
-
-    def test(self):
-        voices = self.engine.getProperty('voices')
-        for voice in voices:
-            print "Using voice:", repr(voice)
-            self.engine.setProperty('voice', voice.id)
-            self.engine.say("Hi there, how's you ?")
-            self.engine.say("A B C D E F G H I J K L M")
-            self.engine.say("N O P Q R S T U V W X Y Z")
-            self.engine.say("0 1 2 3 4 5 6 7 8 9")
-        self.engine.runAndWait()
-        return
-
-    def say_this(self, phrase):
-        # print sys.platform
-        if sys.platform == "darwin":
-            # print "Mac Speech Synthesizer"
-            os.system("say " + phrase)
-        else:
-            self.engine.say(phrase)
-            self.engine.runAndWait()
-        return
-
-
+    html = response.read()
+    json_obj = json.loads(html)
+    return json_obj
 
 
 def choose_response(recipe_object, wit_input, kb_object):
@@ -239,10 +252,3 @@ def sanitize_step(step):
 
     return new_step
 
-def response_test():
-    wit_json = {u'outcomes': [{u'entities': {u'food': [{u'suggested': True, u'type': u'value', u'value': u'salt'}, {u'type': u'value', u'value': u'cocoa'}]}, u'confidence': 0.977, u'intent': u'get_ingredient_amount', u'_text': u'how much vegetable oil do i need'}], u'msg_id': u'cd7fa98d-9407-483c-9d7d-746e319a6f0f', u'_text': u'how much vegetable oil do i need'}
-    recipe = parser.parse_recipe("http://allrecipes.com/recipe/219173/simple-beef-pot-roast/")
-    choose_response(recipe, wit_json, None)
-    return
-
-# response_test()

@@ -1,11 +1,10 @@
-__author__ = 'DoctorWatson'
+__author__ = 'Michael Nowakowski'
 import parser
 import speech_response
 import speechtest2
 import util
 from parser_package import kb
 import util
-from threading import Thread
 
 def demo_function(recipe_object):
 
@@ -81,7 +80,5 @@ def main():
     return
 #
 # if __name__ == '__main__':
-#   main()
+#   demo_function(None)
 
-# main()
-demo_function(None)
