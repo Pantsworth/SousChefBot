@@ -167,22 +167,21 @@ def disconnect_request():
 # def test_connect():
 #     emit('my response', {'data': 'Say "Computer" when you want me to listen! ', 'count': 0})
 
-
+#
 @socketio_app.on('audio', namespace='/test')
 def find_response(json):
     global recipe
     response = ""
     try:
-        if "computer" in json['data']:
-            print('received json: ' + json['data'])
-            # while "computer" in clean_string:
-            clean_string = json['data'].replace("computer", "")
-            print clean_string
-            wit_response = speech_response.wit_call(clean_string)
-            print wit_response
-            response = speech_response.choose_response(recipe, wit_response, None)
-            print response
-            emit('saythis', {'data': response})
+        print('received json: ' + json['data'])
+        # while "computer" in clean_string:
+        clean_string = json['data'].replace("computer", "")
+        print clean_string
+        wit_response = speech_response.wit_call(clean_string)
+        print wit_response
+        response = speech_response.choose_response(recipe, wit_response, None)
+        print response
+        emit('saythis', {'data': response})
     except:
         print "too fast too furious"
 

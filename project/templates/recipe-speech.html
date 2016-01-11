@@ -11,6 +11,7 @@
     <link href="../static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <script src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.1.0/annyang.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
             var $list = $("ol li");
@@ -23,14 +24,34 @@
                     null;
 
             if (window.SpeechRecognition === null) {
-                document.getElementById('ws-unsupported').classList.remove('hidden');
-                document.getElementById('button-play-ws').setAttribute('disabled', 'disabled');
-                document.getElementById('button-stop-ws').setAttribute('disabled', 'disabled');
-                console.log("can't do speech rec")
+                alert('No Speech Support Available :( :( :(');
+                console.log("can't do speech rec");
             } else {
-                var recognizer = new window.SpeechRecognition();
-                var transcription = document.getElementById('transcription');
-                var log = document.getElementById('log');
+
+                //*********************OLD SPEECH REC GARBAGE *****************//
+                //var recognizer = new window.SpeechRecognition();
+                //var transcription = document.getElementById('transcription');
+                //var log = document.getElementById('log');
+                // Recogniser doesn't stop listening even if the user pauses
+                //recognizer.continuous = false;
+                <!--// Start recognising-->
+                <!--recognizer.onresult = function (event) {-->
+                    <!--transcription.textContent = '';-->
+                    <!--for (var i = event.resultIndex; i < event.results.length; i++) {-->
+                        <!--if (event.results[i].isFinal) {-->
+                            <!--console.log(event.results[i][0].transcript)-->
+                            <!--transcription.textContent = event.results[i][0].transcript + ' (Confidence: ' + event.results[i][0].confidence + ')';-->
+
+                        <!--} else {-->
+                            <!--transcription.textContent += event.results[i][0].transcript;-->
+                        <!--}-->
+                    <!--}-->
+                <!--};-->
+                <!--// Listen for errors-->
+                <!--recognizer.onerror = function (event) {-->
+                    <!--log.innerHTML = 'Recognition error: ' + event.message + '<br />' + log.innerHTML;-->
+                <!--};-->
+
 
                 //text-to-voice stuff
                 var su = new SpeechSynthesisUtterance();
@@ -42,28 +63,21 @@
                 namespace = '/test';
                 var socket = io.connect('http://' + document.domain + ':' + location.port + namespace, {'multiplex': false});
 
-                // Recogniser doesn't stop listening even if the user pauses
-                recognizer.continuous = true;
 
-                // Start recognising
-                recognizer.onresult = function (event) {
-                    transcription.textContent = '';
-                    for (var i = event.resultIndex; i < event.results.length; i++) {
-                        if (event.results[i].isFinal) {
-                            console.log(event.results[i][0].transcript)
-                            socket.emit('audio', {data: event.results[i][0].transcript});
 
-                            transcription.textContent = event.results[i][0].transcript + ' (Confidence: ' + event.results[i][0].confidence + ')';
+                var talk_to_me = {'computer *tag': function(tag) {
+                    socket.emit('audio', {data: tag});
+                    console.log(tag);
+                }};
 
-                        } else {
-                            transcription.textContent += event.results[i][0].transcript;
-                        }
-                    }
-                };
-                // Listen for errors
-                recognizer.onerror = function (event) {
-                    log.innerHTML = 'Recognition error: ' + event.message + '<br />' + log.innerHTML;
-                };
+                // Add our commands to annyang
+                annyang.addCommands(talk_to_me);
+
+
+                // Start listening.
+                annyang.start();
+                console.log("started");
+
 
                 //*************SOCKETS******************
                 socket.on('my response', function (msg) {
@@ -83,36 +97,38 @@
                 });
 
                 socket.on('saythis', function (data) {
+                    annyang.pause();
                     console.log(data['data']);
                     su.text = data['data'];
                     speechSynthesis.speak(su);
-
+                    annyang.resume();
+                    console.log('annyang is resumed');
                 });
 
                 //************* END OF SOCKETS******************
 
 
-                document.getElementById('button-play-ws').addEventListener('click', function () {
-                    // Set if we need interim results
-                    recognizer.interimResults = document.querySelector('input[name="recognition-type"][value="interim"]').checked;
+                <!--document.getElementById('button-play-ws').addEventListener('click', function () {-->
+                    <!--// Set if we need interim results-->
+                    <!--recognizer.interimResults = document.querySelector('input[name="recognition-type"][value="interim"]').checked;-->
 
-                    try {
-                        recognizer.start();
-                        log.innerHTML = 'Recognition started' + '<br />' + log.innerHTML;
-                    } catch (ex) {
-                        log.innerHTML = 'Recognition error: ' + ex.message + '<br />' + log.innerHTML;
-                    }
-                });
+                    <!--try {-->
+                        <!--recognizer.start();-->
+                        <!--log.innerHTML = 'Recognition started' + '<br />' + log.innerHTML;-->
+                    <!--} catch (ex) {-->
+                        <!--log.innerHTML = 'Recognition error: ' + ex.message + '<br />' + log.innerHTML;-->
+                    <!--}-->
+                <!--});-->
 
-                document.getElementById('button-stop-ws').addEventListener('click', function () {
-                    recognizer.stop();
-                    log.innerHTML = 'Recognition stopped' + '<br />' + log.innerHTML;
-                });
+                <!--document.getElementById('button-stop-ws').addEventListener('click', function () {-->
+                    <!--recognizer.stop();-->
+                    <!--log.innerHTML = 'Recognition stopped' + '<br />' + log.innerHTML;-->
+                <!--});-->
 
-                document.getElementById('clear-all').addEventListener('click', function () {
-                    transcription.textContent = '';
-                    log.textContent = '';
-                });
+                <!--document.getElementById('clear-all').addEventListener('click', function () {-->
+                    <!--transcription.textContent = '';-->
+                    <!--log.textContent = '';-->
+                <!--});-->
             }
         });
     </script>
