@@ -9,7 +9,7 @@ class RecipeParser_Canonical_Test extends PHPUnit_Framework_TestCase {
      */
     public function test_m_dot_allrecipes() {
         $url       = "http://m.allrecipes.com/recipe/70343/slow-cooker-chicken-taco-soup/";
-        $canonical = "http://allrecipes.com/recipe/slow-cooker-chicken-taco-soup/";
+        $canonical = "http://allrecipes.com/recipe/70343/slow-cooker-chicken-taco-soup/";
         $html = FileUtil::downloadRecipeWithCache($url);
         $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
     }
@@ -18,8 +18,8 @@ class RecipeParser_Canonical_Test extends PHPUnit_Framework_TestCase {
      * @group network
      */
     public function test_allrecipes_print_format() {
-        $url       = "http://allrecipes.com/Recipe-Tools/Print/Recipe.aspx?recipeID=38109&origin=detail&servings=60&metric=false";
-        $canonical = "http://allrecipes.com/Recipe/Pickled-Beets/Detail.aspx";
+        $url       = "http://allrecipes.com/recipe/38109/pickled-beets/print/?recipeType=Recipe&servings=60";
+        $canonical = "http://allrecipes.com/recipe/38109/pickled-beets/";
         $html = FileUtil::downloadRecipeWithCache($url);
         $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
     }
@@ -59,7 +59,7 @@ class RecipeParser_Canonical_Test extends PHPUnit_Framework_TestCase {
      */
     public function test_yummyly_iframe() {
         $url       = "http://www.yummly.com/recipe/Roasted-Chicken-Tacos-Martha-Stewart-191942";
-        $canonical = "http://www.yummly.com/recipe/external/Roasted-Chicken-Tacos-Martha-Stewart-191942";
+        $canonical = "http://www.marthastewart.com/315717/roasted-chicken-tacos";
         $html = FileUtil::downloadRecipeWithCache($url);
         $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
     }
@@ -90,6 +90,46 @@ class RecipeParser_Canonical_Test extends PHPUnit_Framework_TestCase {
     public function test_epicurious_com_print_view() {
         $url       = "http://www.epicurious.com/recipes/food/printerfriendly/celery-spiked-guacamole-with-chiles-51214860";
         $canonical = "http://www.epicurious.com/recipes/food/views/celery-spiked-guacamole-with-chiles-51214860";
+        $html = FileUtil::downloadRecipeWithCache($url);
+        $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
+    }
+
+    /**
+     * @group network
+     */
+    public function test_epicurious_com_ingredients_feature() {
+        $url       = "http://www.epicurious.com/ingredients/how-to-eat-sweet-potatoes-for-every-meal-even-dessert-gallery/4";
+        $canonical = "http://www.epicurious.com/recipes/food/views/sweet-potato-gnocchi-with-fried-sage-and-shaved-chestnuts-355415";
+        $html = FileUtil::downloadRecipeWithCache($url);
+        $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
+    }
+
+    /**
+     * @group network
+     */
+    public function test_epicurious_com_recipe_reviews() {
+        $url       = "http://www.epicurious.com/recipes/food/reviews/marie-helenes-apple-cake-361150";
+        $canonical = "http://www.epicurious.com/recipes/food/views/marie-helenes-apple-cake-361150";
+        $html = FileUtil::downloadRecipeWithCache($url);
+        $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
+    }
+
+    /**
+     * @group network
+     */
+    public function test_epicurious_com_howtocook() {
+        $url       = "http://www.epicurious.com/archive/howtocook/dishes/classic-recipes-cinnamon-rolls";
+        $canonical = "http://www.epicurious.com/recipes/food/views/cinnamon-rolls-with-icing-51160400";
+        $html = FileUtil::downloadRecipeWithCache($url);
+        $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
+    }
+
+    /**
+     * @group network
+     */
+    public function test_epicurious_com_recipes_menus() {
+        $url       = "http://www.epicurious.com/recipes-menus/how-to-make-the-nomad-buttermilk-fried-chicken-fingers-article";
+        $canonical = "http://www.epicurious.com/recipes/food/views/buttermilk-fried-chicken-fingers-51258410";
         $html = FileUtil::downloadRecipeWithCache($url);
         $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
     }
@@ -154,5 +194,33 @@ class RecipeParser_Canonical_Test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
     }
 
-
+    /**
+     * @group network
+     */
+    public function test_saveur_gallery() {
+        $url       = "http://www.saveur.com/gallery/quick-breads-loaves-and-muffins?image=11";
+        $canonical = "http://www.saveur.com/article/Recipes/Classic-Lemon-Poppy-Seed-Muffin";
+        $html = FileUtil::downloadRecipeWithCache($url);
+        $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
+    }
+    
+    /**
+     * @group network
+     */
+    public function test_saveur_gallery_no_image_param() {
+        $url       = "http://www.saveur.com/gallery/Favorite-Fall-Pies?src=SOC&dom=fb";
+        $canonical = "http://www.saveur.com/rosemary-caramel-apple-pie-no-fail-crust-recipe";
+        $html = FileUtil::downloadRecipeWithCache($url);
+        $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
+    }
+    
+    /**
+     * @group network
+     */
+    public function test_saveur_gallery_keller() {
+        $url       = "http://www.saveur.com/gallery/Best-Dessert-and-Cake-Recipes?page=18";
+        $canonical = "http://www.saveur.com/article/recipes/thomas-kellers-coconut-cake";
+        $html = FileUtil::downloadRecipeWithCache($url);
+        $this->assertEquals($canonical, RecipeParser_Canonical::getCanonicalUrl($html, $url));
+    }
 }

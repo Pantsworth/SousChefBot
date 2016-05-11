@@ -24,8 +24,8 @@ class RecipeParser_Parser_MyrecipescomTest extends PHPUnit_Framework_TestCase {
         $this->assertRegExp("/^To prepare pastry/", $recipe->instructions[0]['list'][0]);
         $this->assertEquals("Cooking Light", $recipe->credits);
 
-        $this->assertEquals(
-            "http://cdn-image.myrecipes.com/sites/default/files/styles/300x300/public/image/app/blueberry-galette-ck-1816371-xl.jpg",
+        $this->assertRegExp(
+            "/image\/app\/blueberry-galette-ck-1816371-xl.jpg/",
             $recipe->photo_url);
     }
 
@@ -53,7 +53,7 @@ class RecipeParser_Parser_MyrecipescomTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(30, $recipe->time['prep']);
         $this->assertEquals(139, $recipe->time['cook']);
         $this->assertEquals(16, count($recipe->ingredients[0]['list']));
-        $this->assertEquals(8, count($recipe->instructions[0]['list']));
+        $this->assertEquals(9, count($recipe->instructions[0]['list']));
         $this->assertEquals("Southern Living", $recipe->credits);
     }
 
@@ -85,6 +85,43 @@ class RecipeParser_Parser_MyrecipescomTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(10, count($recipe->ingredients[0]['list']));
         $this->assertEquals(3, count($recipe->instructions[0]['list']));
         $this->assertEquals("Cooking Light", $recipe->credits);
+    }
+
+    public function test_potato_roti_curry() {
+        $path = "data/myrecipes_com_potato_roti_curry_my_com_curl.html";
+        $url = "http://www.myrecipes.com/recipe/potato-roti-curry";
+
+        $recipe = RecipeParser::parse(file_get_contents($path), $url);
+        if (isset($_SERVER['VERBOSE'])) print_r($recipe);
+
+        $this->assertEquals("Potato Roti Curry", $recipe->title);
+        $this->assertEquals("6 servings (serving size: about 1 cup)", $recipe->yield);
+        $this->assertEquals(0, $recipe->time['total']);
+        $this->assertEquals(15, count($recipe->ingredients[0]['list']));
+        $this->assertEquals(2, count($recipe->instructions[0]['list']));
+        $this->assertEquals("Cooking Light", $recipe->credits);
+    }
+
+    public function test_potato_salad() {
+        $path = "data/myrecipes_com_light_and_fresh_potato_salad_my_curl.html";
+        $url = "http://www.myrecipes.com/recipe/light-fresh-potato-salad";
+
+        $recipe = RecipeParser::parse(file_get_contents($path), $url);
+        if (isset($_SERVER['VERBOSE'])) print_r($recipe);
+
+        $this->assertEquals("Light and Fresh Potato Salad", $recipe->title);
+        $this->assertEquals("12 servings (serving size: 3/4 cup)", $recipe->yield);
+        $this->assertEquals(0, $recipe->time['total']);
+        $this->assertEquals(2, count($recipe->ingredients));
+        $this->assertEquals("Dressing", $recipe->ingredients[0]['name']);
+        $this->assertEquals(4, count($recipe->ingredients[0]['list']));
+        $this->assertEquals("Salad", $recipe->ingredients[1]['name']);
+        $this->assertEquals(8, count($recipe->ingredients[1]['list']));
+        $this->assertEquals(3, count($recipe->instructions[0]['list']));
+        $this->assertEquals("To prepare dressing, combine first 4 ingredients in a large bowl; stir with a whisk.", 
+            $recipe->instructions[0]['list'][0]);
+        $this->assertEquals("Cooking Light", $recipe->credits);
+
     }
 
 }

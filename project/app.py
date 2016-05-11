@@ -121,9 +121,8 @@ def jsonreq():
     return render_template('form.html')
 
 
-@app.route('/recipe', methods=['POST'])
+@app.route('/recipe', methods=['GET', 'POST'])
 def index():
-
     global socket_thread
     global speech_thread
     global recipe
@@ -190,9 +189,9 @@ def find_response(json):
 def test_disconnect():
     print('Client disconnected', request.sid)
 
+
 def main():
     socketio_app.run(app, debug=True)
-#
-#
+
 if __name__ == '__main__':
-    socketio_app.run(app, debug=False)
+    socketio_app.run(app, debug=True)

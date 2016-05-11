@@ -49,7 +49,8 @@ def parse_recipe(url, k_base):
     # sometimes the PHP parse_recipe is too verbose. this corrects that issue.
     recipe_json = recipe_json.rpartition('}')
     recipe_json = recipe_json[0] + recipe_json[1]
-    # print recipe_json
+
+    print recipe_json
     parsed_json = json.loads(recipe_json)
     print parsed_json
 
